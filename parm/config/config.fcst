@@ -98,15 +98,27 @@ if [ $lsm -eq 2 -o $lsm -eq 3 ]; then
     export lheatstrg=".false."
     export landice=".false."
 else
-    export lheatstrg=".true."
-    export landice=".true."
+    if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" ]] ; then
+        export lheatstrg=".false."    ##JKH   
+        export landice=".false."      ##JKH
+    else
+        export lheatstrg=".true."    
+        export landice=".true."
+    fi
 fi
 
 # Radiation options 
-export IAER=5111    ;#spectral band mapping method for aerosol optical properties
-export iovr_lw=3    ;#de-correlation length cloud overlap method (Barker, 2008)
-export iovr_sw=3    ;#de-correlation length cloud overlap method (Barker, 2008)
-export icliq_sw=2   ;#cloud optical coeffs from AER's newer version v3.9-v4.0 for hu and stamnes
+if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" ]] ; then
+    export IAER=111    ## JKH 
+    export iovr_lw=1   ## JKH 
+    export iovr_sw=1   ## JKH
+    export icliq_sw=1  ## JKH
+else
+    export IAER=5111    ;#spectral band mapping method for aerosol optical properties
+    export iovr_lw=3    ;#de-correlation length cloud overlap method (Barker, 2008)
+    export iovr_sw=3    ;#de-correlation length cloud overlap method (Barker, 2008)
+    export icliq_sw=2   ;#cloud optical coeffs from AER's newer version v3.9-v4.0 for hu and stamnes
+fi
 
 # CCPP configuration
 export output_1st_tstep_rst=".false."                                        #JKH
