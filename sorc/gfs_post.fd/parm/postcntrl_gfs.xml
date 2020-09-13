@@ -450,6 +450,12 @@
     </param>
 
     <param>
+       <shortname>AVE_DSWRF_ON_SURFACE</shortname>
+       <table_info>NCEP</table_info>
+       <scale>3.0</scale>
+    </param>
+
+    <param>
        <shortname>INST_DSWRF_ON_SURFACE</shortname>
        <table_info>NCEP</table_info>
        <scale>3.0</scale>
@@ -463,6 +469,12 @@
 
     <param>
        <shortname>AVE_DUVB_ON_SURFACE</shortname>
+       <table_info>NCEP</table_info>
+       <scale>3.0</scale>
+    </param>
+
+    <param>
+       <shortname>AVE_DLWRF_ON_SURFACE</shortname>
        <table_info>NCEP</table_info>
        <scale>3.0</scale>
     </param>
