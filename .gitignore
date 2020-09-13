@@ -11,4 +11,6 @@ sorc/logs/
 sorc/fv3gfs.fd/
 sorc/ufs_utils.fd/
 sorc/gfs_wafs.fd/
+sorc/gfs_post.fd
+sorc/gsi.fd
 sorc/verif-global.fd/

@@ -21,7 +21,7 @@ if [[ ! -d fv3gfs_ccpp.fd ]] ; then
     rm -f ${topdir}/checkout-fv3gfs_ccpp.log
     git clone --recursive -b gsd/develop https://github.com/NOAA-GSD/ufs-weather-model  fv3gfs_ccpp.fd >> ${topdir}/checkout-fv3gfs_ccpp.log 2>&1
     cd fv3gfs_ccpp.fd
-    git checkout 6671b15df63eb1c728670139b53d59d63cbbf946
+    git checkout eff83ae37d98c66534366ba3c8d773b9522a5c62
     git submodule sync
     git submodule update --init --recursive
     cd ${topdir}
@@ -38,6 +38,7 @@ if [[ ! -d gsi.fd ]] ; then
     git checkout release/gfsda.v16.0.0
     git submodule update
     cd ${topdir}
+    rsync -ax gsi.fd_jkh/ gsi.fd/
 else
     echo 'Skip.  Directory gsi.fd already exists.'
 fi
@@ -71,6 +72,7 @@ if [[ ! -d gfs_post.fd ]] ; then
     cd gfs_post.fd
     git checkout upp_gfsv16_release.v1.0.10
     cd ${topdir}
+    rsync -ax gfs_post.fd_jkh/ gfs_post.fd/
 else
     echo 'Skip.  Directory gfs_post.fd already exists.'
 fi
