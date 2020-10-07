@@ -1,0 +1,5 @@
+rocotorun -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycemcv16/cycemcv16.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycemcv16/cycemcv16.db
+rocotostat -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycemcv16/cycemcv16.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycemcv16/cycemcv16.db | m
+
+
+

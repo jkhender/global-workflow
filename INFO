@@ -1,3 +1,73 @@
+Oct 02, 2020
+------------
+ - do cycled run with GFS physics (emcv16beta) and GSD physics (GSDnoah)
+   -- GFS Physics:  EnKF forecasts completed successfully
+                    GDAS forecast crashed with floating invalid error
+
+                    in calwxtbg, jsta,jend=         261         280  im=        3072
+                    in calwxtbg,me=          13 iseed=   253654519
+                    in calwxtbg, jsta,jend=         161         180  im=        3072
+                    in calwxtbg,me=           8 iseed=   253654519
+                    forrtl: error (65): floating invalid
+                    Image              PC                Routine            Line        Source
+                    global_fv3gfs_ccp  0000000007A7439E  Unknown               Unknown  Unknown
+                    libpthread-2.17.s  00002B269C96F5F0  Unknown               Unknown  Unknown
+                    global_fv3gfs_ccp  00000000073D9C53  calwxt_bourg_post         109  CALWXT_BOURG.f
+                    global_fv3gfs_ccp  000000000737854B  surfce_                  4368  SURFCE.f
+                    global_fv3gfs_ccp  000000000731949B  process_                   99  PROCESS.f
+                    global_fv3gfs_ccp  0000000002B4FD91  post_gfs_mp_post_         197  post_gfs.F90
+
+   -- GSD Physics:  EnKF forecasts failed with floating invalid error
+                    forrtl: error (65): floating invalid
+                    Image              PC                Routine            Line        Source
+                    global_fv3gfs_ccp  0000000007A7439E  Unknown               Unknown  Unknown
+                    libpthread-2.17.s  00002B9C436735F0  Unknown               Unknown  Unknown
+                    global_fv3gfs_ccp  0000000002CED931  module_write_netc         383  module_write_netcdf_parallel.F90
+                    global_fv3gfs_ccp  0000000002AF05A7  module_wrt_grid_c        1533  module_wrt_grid_comp.F90
+                    libesmf.so         00002B9C3F2EDED1  _ZN5ESMCI6FTable1        2010  ESMCI_FTable.C
+                    libesmf.so         00002B9C3F2F1AB6  ESMCI_FTableCallE         746  ESMCI_FTable.C
+                    libesmf.so         00002B9C3F7DD78A  _ZN5ESMCI2VM5ente        1178  ESMCI_VM.C
+                    libesmf.so         00002B9C3F2EF507  c_esmc_ftablecall         898  ESMCI_FTable.C
+
+                    GDAS forecast crashed with floating invalid error
+
+                    in calwxtbg, jsta,jend=         261         280  im=        3072
+                    in calwxtbg,me=          13 iseed=   253654519
+                    in calwxtbg, jsta,jend=         161         180  im=        3072
+                    in calwxtbg,me=           8 iseed=   253654519
+                    forrtl: error (65): floating invalid
+                    Image              PC                Routine            Line        Source
+                    global_fv3gfs_ccp  0000000007A7439E  Unknown               Unknown  Unknown
+                    libpthread-2.17.s  00002B269C96F5F0  Unknown               Unknown  Unknown
+                    global_fv3gfs_ccp  00000000073D9C53  calwxt_bourg_post         109  CALWXT_BOURG.f
+                    global_fv3gfs_ccp  000000000737854B  surfce_                  4368  SURFCE.f
+                    global_fv3gfs_ccp  000000000731949B  process_                   99  PROCESS.f
+                    global_fv3gfs_ccp  0000000002B4FD91  post_gfs_mp_post_         197  post_gfs.F90
+
+          
+Oct 01, 2020
+------------
+ - added aerosol variables to ICs created from chgres_cube  (C768/C384, L64)
+ 
+Sep 17, 2020
+============
+ - updated to feature/gfsv16b 15Sep20 branch, ce1c782
+   (new component restructure)
+
+Sep 14, 2020
+============
+ - updated to feature/gfsv16b 13Aug2020 branch, 9b923ac
+ - using 13Aug2020 gsd/develop branch, eff83ae
+ - test cycled run:  C768/C384, 40 members, GSDnoah
+
+   get ICs for gdas and enkf
+      htar -xvf /NCEPPROD/hpssprod/runhistory/rh2019/201909/20190930/gpfs_dell1_nco_ops_com_gfs_prod_gdas.20190930_18.gdas_restart.tar
+
+      ln -s /scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd-ccpp-dev/FV3GFSrun/cycGSD_C768/enkf_18Z_20190930.tar
+      forach mem ( `seq -f %03g 1 40` )
+         tar -xvf tarx enkf_18Z_20190930.tar enkfgdas.20190930/mem${ff}
+      end
+
 May 19, 2020
 ============
  - updated to feature/gfsv16b 18May2020 branch, 9f7df9d

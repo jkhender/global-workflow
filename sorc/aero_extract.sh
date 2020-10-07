@@ -5,7 +5,14 @@
 ##    ./aero_extract.sh 
 ##
 
-machine=hera
+if [[ -d /scratch2 ]] ; then
+  machine=hera
+elif [[ -d /lfs4 ]] ; then
+  machine=jet
+else
+  echo "Can't run on this platform!"
+  exit 1
+fi
 cd aeroconv.fd
 
 # thirdparty directory
