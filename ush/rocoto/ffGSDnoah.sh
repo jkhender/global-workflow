@@ -26,7 +26,3 @@ sed -i "s/fv3ic.sh/makefv3ic_link.sh/" $EXPDIR/$PSLOT/$PSLOT.xml
 # call jobs/rocoto/arch_gsd.sh for gfsarch task
 sed -i "s/arch.sh/arch_gsd.sh/" $EXPDIR/$PSLOT/$PSLOT.xml
 
-# use config.nsst_gsd values
-cp $GITDIR/parm/config/config.nsst_gsd $EXPDIR/$PSLOT/config.nsst
-
-
