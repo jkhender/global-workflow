@@ -8,16 +8,16 @@ machine=${2}
 
 if [ $# -lt 2 ]; then
     echo '***ERROR*** must specify two arguements: (1) RUN_ENVIR, (2) machine'
-    echo ' Syntax: link_fv3gfs.sh ( nco | emc ) ( cray | dell | hera )'
+    echo ' Syntax: link_fv3gfs.sh ( nco | emc ) ( cray | dell | hera | orion )'
     exit 1
 fi
 
 if [ $RUN_ENVIR != emc -a $RUN_ENVIR != nco ]; then
-    echo 'Syntax: link_fv3gfs.sh ( nco | emc ) ( cray | dell | hera )'
+    echo 'Syntax: link_fv3gfs.sh ( nco | emc ) ( cray | dell | hera | orion )'
     exit 1
 fi
-if [ $machine != cray -a $machine != dell -a $machine != hera ]; then
-    echo 'Syntax: link_fv3gfs.sh ( nco | emc ) ( cray | dell | hera )'
+if [ $machine != cray -a $machine != dell -a $machine != hera -a $machine != orion ]; then
+    echo 'Syntax: link_fv3gfs.sh ( nco | emc ) ( cray | dell | hera | orion )'
     exit 1
 fi
 
@@ -31,11 +31,13 @@ pwd=$(pwd -P)
 #--model fix fields
 #------------------------------
 if [ $machine == "cray" ]; then
-    FIX_DIR="/gpfs/hps3/emc/global/noscrub/emc.glopara/git/fv3gfs/fix"
+    FIX_DIR="/gpfs/hps3/emc/global/noscrub/emc.glopara/git/fv3gfs/fix_nco_gfsv16"
 elif [ $machine = "dell" ]; then
-    FIX_DIR="/gpfs/dell2/emc/modeling/noscrub/emc.glopara/git/fv3gfs/fix"
+    FIX_DIR="/gpfs/dell2/emc/modeling/noscrub/emc.glopara/git/fv3gfs/fix_nco_gfsv16"
 elif [ $machine = "hera" ]; then
-    FIX_DIR="/scratch1/NCEPDEV/global/glopara/fix"
+    FIX_DIR="/scratch1/NCEPDEV/global/glopara/fix_nco_gfsv16"
+elif [ $machine = "orion" ]; then
+    FIX_DIR="/work/noaa/global/glopara/fix_nco_gfsv16"
 fi
 cd ${pwd}/../fix                ||exit 8
 for dir in fix_am fix_fv3_gmted2010 fix_gldas fix_orog fix_verif fix_wave_gfs ; do
@@ -55,20 +57,20 @@ fi
 #--add files from external repositories
 #---------------------------------------
 cd ${pwd}/../jobs               ||exit 8
-    $LINK ../sorc/gfs_post.fd/jobs/JGLOBAL_POST_MANAGER      .
-    $LINK ../sorc/gfs_post.fd/jobs/JGLOBAL_NCEPPOST          .
-    $LINK ../sorc/gldas.fd/jobs/JGDAS_GLDAS                  .             
+    $LINK ../sorc/gfs_post.fd/jobs/JGLOBAL_ATMOS_POST_MANAGER      .
+    $LINK ../sorc/gfs_post.fd/jobs/JGLOBAL_ATMOS_NCEPPOST          .
+    $LINK ../sorc/gldas.fd/jobs/JGDAS_ATMOS_GLDAS            .             
 cd ${pwd}/../parm               ||exit 8
     [[ -d post ]] && rm -rf post
     $LINK ../sorc/gfs_post.fd/parm                           post
     [[ -d gldas ]] && rm -rf gldas
     $LINK ../sorc/gldas.fd/parm                              gldas
 cd ${pwd}/../scripts            ||exit 8
-    $LINK ../sorc/gfs_post.fd/scripts/exgdas_nceppost.sh .
-    $LINK ../sorc/gfs_post.fd/scripts/exgfs_nceppost.sh  .
-    $LINK ../sorc/gfs_post.fd/scripts/exglobal_pmgr.sh   .
+    $LINK ../sorc/gfs_post.fd/scripts/exgdas_atmos_nceppost.sh .
+    $LINK ../sorc/gfs_post.fd/scripts/exgfs_atmos_nceppost.sh  .
+    $LINK ../sorc/gfs_post.fd/scripts/exglobal_atmos_pmgr.sh   .
     $LINK ../sorc/ufs_utils.fd/scripts/exemcsfc_global_sfc_prep.sh .
-    $LINK ../sorc/gldas.fd/scripts/exgdas_gldas.sh .
+    $LINK ../sorc/gldas.fd/scripts/exgdas_atmos_gldas.sh .
 cd ${pwd}/../ush                ||exit 8
     for file in fv3gfs_downstream_nems.sh fv3gfs_dwn_nems.sh gfs_nceppost.sh  \
         gfs_transfer.sh mod_icec.sh link_crtm_fix.sh trim_rh.sh fix_precip.sh; do
@@ -219,23 +221,20 @@ if [ -d ${pwd}/gfs_wafs.fd ]; then
 fi
 
 for ufs_utilsexe in \
-     fregrid           make_hgrid           nemsio_get    shave.x \
-     emcsfc_ice_blend  fregrid_parallel  make_hgrid_parallel  nemsio_read \
-     emcsfc_snow2mdl   global_chgres     make_solo_mosaic     nst_tf_chg.x \
-     filter_topo       global_cycle      mkgfsnemsioctl       orog.x ; do
+     emcsfc_ice_blend  emcsfc_snow2mdl  global_chgres  global_cycle ; do
     [[ -s $ufs_utilsexe ]] && rm -f $ufs_utilsexe
     $LINK ../sorc/ufs_utils.fd/exec/$ufs_utilsexe .
 done
 
 for gsiexe in  calc_analysis.x calc_increment_ens_ncio.x calc_increment_ens.x \
     getsfcensmeanp.x getsigensmeanp_smooth.x getsigensstatp.x global_enkf.x global_gsi.x \
-    interp_inc.x nc_diag_cat_serial.x oznmon_horiz.x oznmon_time.x radmon_angle.x \
+    interp_inc.x ncdiag_cat.x oznmon_horiz.x oznmon_time.x radmon_angle.x \
     radmon_bcoef.x radmon_bcor.x radmon_time.x recentersigp.x;do
     [[ -s $gsiexe ]] && rm -f $gsiexe
     $LINK ../sorc/gsi.fd/exec/$gsiexe .
 done
 
-for gldasexe in gdas2gldas  gldas2gdas  gldas_forcing  gldas_noah gldas_noah_rst  gldas_post; do
+for gldasexe in gdas2gldas  gldas2gdas  gldas_forcing  gldas_model  gldas_post  gldas_rst; do
     [[ -s $gldasexe ]] && rm -f $gldasexe
     $LINK ../sorc/gldas.fd/exec/$gldasexe .
 done
@@ -273,7 +272,7 @@ cd ${pwd}/../sorc   ||   exit 8
     $SLINK gsi.fd/util/netcdf_io/interp_inc.fd                                             interp_inc.fd
 
     [[ -d ncdiag.fd ]] && rm -rf ncdiag.fd
-    $SLINK gsi.fd/src/ncdiag                                                               ncdiag.fd
+    $SLINK gsi.fd/src/ncdiag                                                               ncdiag_cat.fd
 
     [[ -d oznmon_horiz.fd ]] && rm -rf oznmon_horiz.fd
     $SLINK gsi.fd/util/Ozone_Monitor/nwprod/oznmon_shared.v2.0.0/sorc/oznmon_horiz.fd      oznmon_horiz.fd
