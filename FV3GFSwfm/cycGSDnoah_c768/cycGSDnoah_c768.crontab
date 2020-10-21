@@ -1,0 +1,6 @@
+
+#################### cycGSDnoah_c768 ####################
+MAILTO=""
+*/5 * * * * /apps/rocoto/1.3.2/bin/rocotorun -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure_update/FV3GFSwfm/cycGSDnoah_c768/cycGSDnoah_c768.db -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure_update/FV3GFSwfm/cycGSDnoah_c768/cycGSDnoah_c768.xml
+#################################################################
+

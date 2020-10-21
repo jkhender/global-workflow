@@ -1,5 +1,0 @@
-rocotorun -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycGSDnoah/cycGSDnoah.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycGSDnoah/cycGSDnoah.db
-rocotostat  -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycGSDnoah/cycGSDnoah.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycGSDnoah/cycGSDnoah.db
-
-
-rocotorun -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycGSDnoah/aeroics.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gsd_ccpp_v16b_restructure/FV3GFSwfm/cycGSDnoah/aeroics.db
