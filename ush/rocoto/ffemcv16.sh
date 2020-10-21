@@ -6,7 +6,7 @@ EXPDIR=$GITDIR/FV3GFSwfm                                                        
 #    ICSDIR is assumed to be under $COMROT/FV3ICS
 #cp $GITDIR/parm/config/config.base.emc.dyn $GITDIR/parm/config/config.base
 
-PSLOT=ffGSDnoah
+PSLOT=ffemcv16
 IDATE=2020082000
 EDATE=2020082000
 RESDET=768               ## 96 192 384 768
