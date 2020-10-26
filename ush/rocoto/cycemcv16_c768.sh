@@ -6,8 +6,8 @@ EXPDIR=$GITDIR/FV3GFSwfm                                                        
 #    ICSDIR is assumed to be under $COMROT/FV3ICS
 
 PSLOT=cycemcv16_c768
-IDATE=2020051918
-EDATE=2020052100
+IDATE=2020081918
+EDATE=2020082100
 RESDET=768 
 RESENS=384
 NENS=20

@@ -44,6 +44,7 @@ if [[ ! -d fv3gfs_ccpp.fd ]] ; then
 #JKH    git checkout b00a11f
     git clone https://github.com/ufs-community/ufs-weather-model ufs-weather-model >> ${topdir}/checkout-ufs-2a6528d.log 2>&1
     cd ufs-weather-model
+    git checkout 2a6528d
     git submodule sync
     git submodule update --init --recursive
     cd ${topdir}
