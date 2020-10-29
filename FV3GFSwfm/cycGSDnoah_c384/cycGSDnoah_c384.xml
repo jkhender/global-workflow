@@ -148,7 +148,7 @@
 
 	<!ENTITY QUEUE_ANAL_GFS     "&QUEUE;">
 	<!ENTITY WALLTIME_ANAL_GFS  "01:00:00">
-	<!ENTITY RESOURCES_ANAL_GFS "<nodes>250:ppn=4:tpp=10</nodes>">
+	<!ENTITY RESOURCES_ANAL_GFS "<nodes>50:ppn=8:tpp=5</nodes>">
 	<!ENTITY NATIVE_ANAL_GFS    "--export=NONE">
 
 	<!ENTITY QUEUE_ANALCALC_GFS     "&QUEUE;">
@@ -714,9 +714,9 @@
 
 <metatask name="gdasepmn">
 
-	<var name="grp">000 001 002 003 004 005 006</var>
-	<var name="dep">f003 f004 f005 f006 f007 f008 f009</var>
-	<var name="lst">f003 f004 f005 f006 f007 f008 f009</var>
+	<var name="grp">000</var>
+	<var name="dep">f006</var>
+	<var name="lst">f006</var>
 
 	<task name="gdasepos#grp#" cycledefs="gdas" maxtries="&MAXTRIES;">
 
@@ -886,7 +886,8 @@
 
 </task>
 
-<task name="gfsfcst" cycledefs="gfs" maxtries="&MAXTRIES;">
+<!--<task name="gfsfcst" cycledefs="gfs" maxtries="&MAXTRIES;"> -->
+<task name="gfsfcst" cycledefs="gfs" maxtries="25">
 
 	<command>&JOBS_DIR;/fcst.sh</command>
 
