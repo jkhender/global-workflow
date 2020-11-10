@@ -135,11 +135,11 @@ else
 fi
 
 echo aeroconv checkout ...
-if [[ ! -d aeroconv ]] ; then
+if [[ ! -d aeroconv.fd ]] ; then
     rm -f ${topdir}/checkout-aero.log
-    git clone https://github.com/NCAR/aeroconv aeroconv >> ${topdir}/checkout-aero.log 2>&1
+    git clone https://github.com/NCAR/aeroconv aeroconv.fd >> ${topdir}/checkout-aero.log 2>&1
 else
-    echo 'Skip.  Directory aeroconv already exists.'
+    echo 'Skip.  Directory aeroconv.fd already exists.'
 fi
 
 exit 0

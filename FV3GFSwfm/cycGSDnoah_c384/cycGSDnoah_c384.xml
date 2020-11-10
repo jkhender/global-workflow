@@ -16,11 +16,11 @@
 	<!-- Experiment parameters such as name, starting, ending dates -->
 	<!ENTITY PSLOT "cycGSDnoah_c384">
 	<!ENTITY SDATE "202008191800">
-	<!ENTITY EDATE "202008210000">
+	<!ENTITY EDATE "202008220000">
 
 	<!-- Starting and ending dates for GFS cycle -->
 	<!ENTITY SDATE_GFS    "202008200000">
-	<!ENTITY EDATE_GFS    "202008210000">
+	<!ENTITY EDATE_GFS    "202008220000">
 	<!ENTITY INTERVAL_GFS "24:00:00">
 
 	<!-- Run Envrionment -->
@@ -58,7 +58,7 @@
 
 	<!ENTITY QUEUE_ANAL_GDAS     "&QUEUE;">
 	<!ENTITY WALLTIME_ANAL_GDAS  "01:00:00">
-	<!ENTITY RESOURCES_ANAL_GDAS "<nodes>40:ppn=4:tpp=10</nodes>">
+	<!ENTITY RESOURCES_ANAL_GDAS "<nodes>50:ppn=8:tpp=5</nodes>">
 	<!ENTITY NATIVE_ANAL_GDAS    "--export=NONE">
 
 	<!ENTITY QUEUE_ANALCALC_GDAS     "&QUEUE;">
@@ -71,9 +71,14 @@
 	<!ENTITY RESOURCES_ANALDIAG_GDAS "<nodes>3:ppn=40:tpp=1</nodes>">
 	<!ENTITY NATIVE_ANALDIAG_GDAS    "--export=NONE">
 
+	<!ENTITY QUEUE_GLDAS_GDAS     "&QUEUE;">
+	<!ENTITY WALLTIME_GLDAS_GDAS  "00:10:00">
+	<!ENTITY RESOURCES_GLDAS_GDAS "<nodes>3:ppn=40:tpp=1</nodes>">
+	<!ENTITY NATIVE_GLDAS_GDAS    "--export=NONE">
+
 	<!ENTITY QUEUE_FCST_GDAS     "&QUEUE;">
 	<!ENTITY WALLTIME_FCST_GDAS  "00:30:00">
-	<!ENTITY RESOURCES_FCST_GDAS "<nodes>57:ppn=10:tpp=4</nodes>">
+	<!ENTITY RESOURCES_FCST_GDAS "<nodes>43:ppn=10:tpp=4</nodes>">
 	<!ENTITY NATIVE_FCST_GDAS    "--export=NONE">
 
 	<!ENTITY QUEUE_POST_GDAS     "&QUEUE;">
@@ -96,7 +101,7 @@
 
 	<!ENTITY QUEUE_EOBS_GDAS     "&QUEUE;">
 	<!ENTITY WALLTIME_EOBS_GDAS  "00:10:00">
-	<!ENTITY RESOURCES_EOBS_GDAS "<nodes>3:ppn=20:tpp=2</nodes>">
+	<!ENTITY RESOURCES_EOBS_GDAS "<nodes>5:ppn=20:tpp=2</nodes>">
 	<!ENTITY NATIVE_EOBS_GDAS    "--export=NONE">
 
 	<!ENTITY QUEUE_EDIAG_GDAS     "&QUEUE;">
@@ -106,7 +111,7 @@
 
 	<!ENTITY QUEUE_EUPD_GDAS     "&QUEUE;">
 	<!ENTITY WALLTIME_EUPD_GDAS  "00:30:00">
-	<!ENTITY RESOURCES_EUPD_GDAS "<nodes>21:ppn=4:tpp=10</nodes>">
+	<!ENTITY RESOURCES_EUPD_GDAS "<nodes>100:ppn=1:tpp=40</nodes>">
 	<!ENTITY NATIVE_EUPD_GDAS    "--export=NONE">
 
 	<!ENTITY QUEUE_ECHGRES_GDAS     "&QUEUE;">
@@ -158,7 +163,7 @@
 
 	<!ENTITY QUEUE_FCST_GFS     "&QUEUE;">
 	<!ENTITY WALLTIME_FCST_GFS  "04:00:00">
-	<!ENTITY RESOURCES_FCST_GFS "<nodes>44:ppn=10:tpp=4</nodes>">
+	<!ENTITY RESOURCES_FCST_GFS "<nodes>30:ppn=10:tpp=4</nodes>">
 	<!ENTITY NATIVE_FCST_GFS    "--export=NONE">
 
 	<!ENTITY QUEUE_POST_GFS     "&QUEUE;">
@@ -331,7 +336,43 @@
 
 </task>
 
-<task name="gdasfcst" cycledefs="gdas" maxtries="&MAXTRIES;">
+<task name="gdasgldas" cycledefs="gdas" maxtries="&MAXTRIES;">
+
+	<command>&JOBS_DIR;/gldas.sh</command>
+
+	<jobname><cyclestr>&PSLOT;_gdasgldas_@H</cyclestr></jobname>
+	<account>&ACCOUNT;</account>
+	<queue>&QUEUE_GLDAS_GDAS;</queue>
+	&RESOURCES_GLDAS_GDAS;
+	<walltime>&WALLTIME_GLDAS_GDAS;</walltime>
+	
+	<native>&NATIVE_GLDAS_GDAS;</native>
+
+	<join><cyclestr>&ROTDIR;/logs/@Y@m@d@H/gdasgldas.log</cyclestr></join>
+
+	<envar><name>SLURM_SET</name><value>YES</value></envar>
+	<envar><name>RUN_ENVIR</name><value>&RUN_ENVIR;</value></envar>
+	<envar><name>HOMEgfs</name><value>&HOMEgfs;</value></envar>
+	<envar><name>EXPDIR</name><value>&EXPDIR;</value></envar>
+	<envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+	<envar><name>CDUMP</name><value>gdas</value></envar>
+	<envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+	<envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+
+	<dependency>
+		<and>
+			<or>
+				<datadep><cyclestr>&ROTDIR;/gdas.@Y@m@d/@H/atmos/gdas.t@Hz.loginc.txt</cyclestr></datadep>
+				<taskdep task="gdasanal"/>
+			</or>
+			<cycleexistdep cycle_offset="-06:00:00"/>
+		</and>
+	</dependency>
+
+</task>
+
+<!--<task name="gdasfcst" cycledefs="gdas" maxtries="&MAXTRIES;"> -->
+<task name="gdasfcst" cycledefs="gdas" maxtries="15">
 
 	<command>&JOBS_DIR;/fcst.sh</command>
 
@@ -357,7 +398,7 @@
 	<dependency>
 		<or>
 			<not><cycleexistdep cycle_offset="-06:00:00"/></not>
-			<taskdep task="gdasanalcalc"/>
+			<taskdep task="gdasgldas"/>
 		</or>
 	</dependency>
 
@@ -714,9 +755,9 @@
 
 <metatask name="gdasepmn">
 
-	<var name="grp">000</var>
-	<var name="dep">f006</var>
-	<var name="lst">f006</var>
+	<var name="grp">000 001 002 003 004 005 006</var>
+	<var name="dep">f003 f004 f005 f006 f007 f008 f009</var>
+	<var name="lst">f003 f004 f005 f006 f007 f008 f009</var>
 
 	<task name="gdasepos#grp#" cycledefs="gdas" maxtries="&MAXTRIES;">
 

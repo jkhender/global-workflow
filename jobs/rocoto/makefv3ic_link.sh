@@ -16,7 +16,7 @@ echo
 yyyymmdd=`echo $CDATE | cut -c1-8`
 hh=`echo $CDATE | cut -c9-10`
 fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}/${CASE}
-outdir=${ROTDIR}/${CDUMP}.${yyyymmdd}/${hh}
+outdir=${ROTDIR}/${CDUMP}.${yyyymmdd}/${hh}/atmos
 
 ## create link to FV3ICS directory
 if [[ ! -d $outdir ]]; then

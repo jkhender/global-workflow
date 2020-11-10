@@ -1,0 +1,5 @@
+ 09Nov20
+---------
+ testing L128 configuration for Tanya
+   - use what Sam recommended on jet:  12x12, 4 th; 2 write groups
+        12*12*6 = 864 + (80 * 2) = 1024 / 10 = 103

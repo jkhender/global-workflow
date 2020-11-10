@@ -282,19 +282,10 @@ def get_workflow(dict_configs, cdump='gdas'):
 
     # chgres fv3ic
     deps = []
-    data = '&ICSDIR;/@Y@m@d@H/&CDUMP;/&CDUMP;.@Y@m@d/@H/siganl.&CDUMP;.@Y@m@d@H'
+    data = '&ROTDIR;/&CDUMP;.@Y@m@d/@H/INPUT'
     dep_dict = {'type':'data', 'data':data}
     deps.append(rocoto.add_dependency(dep_dict))
-    data = '&ICSDIR;/@Y@m@d@H/&CDUMP;/&CDUMP;.@Y@m@d/@H/&CDUMP;.t@Hz.sanl'
-    dep_dict = {'type':'data', 'data':data}
-    deps.append(rocoto.add_dependency(dep_dict))
-    data = '&ICSDIR;/@Y@m@d@H/&CDUMP;/&CDUMP;.@Y@m@d/@H/gfnanl.&CDUMP;.@Y@m@d@H'
-    dep_dict = {'type':'data', 'data':data}
-    deps.append(rocoto.add_dependency(dep_dict))
-    data = '&ICSDIR;/@Y@m@d@H/&CDUMP;/&CDUMP;.@Y@m@d/@H/&CDUMP;.t@Hz.atmanl.nemsio'
-    dep_dict = {'type':'data', 'data':data}
-    deps.append(rocoto.add_dependency(dep_dict))
-    dependencies = rocoto.create_dependency(dep_condition='or', dep=deps)
+    dependencies = rocoto.create_dependency(dep_condition='not', dep=deps)
 
     deps = []
     data = '&ICSDIR;/@Y@m@d@H/&CDUMP;/&CASE;/INPUT/gfs_data.tile6.nc'
@@ -303,15 +294,21 @@ def get_workflow(dict_configs, cdump='gdas'):
     data = '&ICSDIR;/@Y@m@d@H/&CDUMP;/&CASE;/INPUT/sfc_data.tile6.nc'
     dep_dict = {'type':'data', 'data':data}
     deps.append(rocoto.add_dependency(dep_dict))
-    deps = rocoto.create_dependency(dep_condition='and', dep=deps)
-    dependencies2 = rocoto.create_dependency(dep_condition='not', dep=deps)
+    dependencies2 = rocoto.create_dependency(dep_condition='and', dep=deps)
 
     deps = []
     deps.append(dependencies)
     deps.append(dependencies2)
     dependencies = rocoto.create_dependency(dep_condition='and', dep=deps)
 
-    task = wfu.create_wf_task('fv3ic', cdump=cdump, envar=envars, dependency=dependencies)
+    fv3_envars = []
+    fv3_envars.append(rocoto.create_envar(name='ROTDIR', value='&ROTDIR;'))
+    fv3_envars.append(rocoto.create_envar(name='CDATE', value='<cyclestr>@Y@m@d@H</cyclestr>'))
+    fv3_envars.append(rocoto.create_envar(name='CDUMP', value='&CDUMP;'))
+    fv3_envars.append(rocoto.create_envar(name='CASE', value='&CASE;'))
+    fv3_envars.append(rocoto.create_envar(name='ICSDIR', value='&ICSDIR;'))
+
+    task = wfu.create_wf_task('fv3ic', cdump=cdump, envar=fv3_envars, dependency=dependencies)
     tasks.append(task)
     tasks.append('\n')
 
@@ -348,7 +345,10 @@ def get_workflow(dict_configs, cdump='gdas'):
         dependencies2 = rocoto.create_dependency(dep_condition='and', dep=deps)
 
     deps = []
-    deps.append(dependencies)
+    #JKHdeps.append(dependencies)
+    data = '&ROTDIR;/&CDUMP;.@Y@m@d/@H/INPUT'
+    dep_dict = {'type':'data', 'data':data}
+    deps.append(dependencies2)
     if do_wave in ['Y', 'YES'] and do_wave_cdump in ['GFS', 'BOTH']:
         deps.append(dependencies2)
     dependencies = rocoto.create_dependency(dep_condition='and', dep=deps)
