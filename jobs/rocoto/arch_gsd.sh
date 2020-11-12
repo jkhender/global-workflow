@@ -27,7 +27,7 @@ for config in $configs; do
     [[ $status -ne 0 ]] && exit $status
 done
 
-COMIN="$ROTDIR/$CDUMP.$PDY/$cyc"
+COMIN="$ROTDIR/$CDUMP.$PDY/$cyc/atmos"
 cd $COMIN
 
 ###############################################################
@@ -37,12 +37,20 @@ if [ $HPSSARCH = "YES" ]; then
 
   if [ $CDUMP = "gfs" ]; then
   
+      # archive nc files (gfs.t00z.atmfHHH.nc, gfs.t00z.sfcfHHH.nc, gfs.t00z.logfHHH.txt )
+      htar -P -cvf $ATARDIR/$CDATE/gfs_nc.tar gfs.*nc gfs*log*txt
+      status=$?
+      if [ $status -ne 0 ]; then
+        echo "HTAR $CDATE gfs_nc.tar failed"
+#        exit $status
+      fi
+
       # archive nemsio files (gfs.t00z.atmfHHH.nemsio, gfs.t00z.sfcfHHH.nemsio, gfs.t00z.logfHHH.nemsio )
       htar -P -cvf $ATARDIR/$CDATE/gfs_nemsio.tar gfs.*nemsio
       status=$?
       if [ $status -ne 0 ]; then
         echo "HTAR $CDATE gfs_nemsio.tar failed"
-        exit $status
+#        exit $status
       fi
       
       # archive GRIB2 files (gfs.t00z.pgrb2.0p25.fHHH, gfs.t00z.pgrb2.0p50.fHHH)
