@@ -124,7 +124,7 @@
 	<dependency>
 		<and>
 			<not>
-				<datadep><cyclestr>&ROTDIR;/&CDUMP;.@Y@m@d/@H/INPUT</cyclestr></datadep>
+				<datadep><cyclestr>&ROTDIR;/&CDUMP;.@Y@m@d/@H/atmos/INPUT</cyclestr></datadep>
 			</not>
 			<and>
 				<datadep><cyclestr>&ICSDIR;/@Y@m@d@H/&CDUMP;/&CASE;/INPUT/gfs_data.tile6.nc</cyclestr></datadep>

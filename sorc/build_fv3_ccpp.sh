@@ -21,6 +21,6 @@ if [ $target = hera ]; then target=hera.intel ; fi
 cd fv3gfs_ccpp.fd/
 FV3=$( pwd -P )/FV3
 cd tests/
-#JKH./compile.sh "$FV3" "$target" "CCPP=Y 32BIT=Y STATIC=Y SUITES=FV3_GFS_v15,FV3_GSD_noah,FV3_GFS_v16beta,FV3_GSD_v0" 
-./compile.sh "$target" "CCPP=Y 32BIT=Y STATIC=Y SUITES=FV3_GFS_v15,FV3_GSD_noah,FV3_GFS_v16beta,FV3_GSD_v0" 
+./compile.sh "$FV3" "$target" "CCPP=Y 32BIT=Y STATIC=Y SUITES=FV3_GFS_v15,FV3_GSD_noah,FV3_GFS_v16beta,FV3_GSD_v0" 
+#JKH./compile.sh "$target" "CCPP=Y 32BIT=Y STATIC=Y SUITES=FV3_GFS_v15,FV3_GSD_noah,FV3_GFS_v16beta,FV3_GSD_v0" 
 mv -f fv3.exe ../NEMS/exe/global_fv3gfs_ccpp.x

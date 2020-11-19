@@ -36,21 +36,26 @@ fi
 echo fv3gfs_ccpp checkout ...
 if [[ ! -d fv3gfs_ccpp.fd ]] ; then
     rm -f ${topdir}/checkout-fv3gfs_ccpp.log
+
+    #13Aug gsd/develop  -- need FV3 parameter to compile
     #JKHgit clone --recursive -b gsd/develop https://github.com/NOAA-GSD/ufs-weather-model  fv3gfs_ccpp.fd >> ${topdir}/checkout-fv3gfs_ccpp.log 2>&1
     #JKHcd fv3gfs_ccpp.fd
-    #JKHgit checkout eff83ae37d98c66534366ba3c8d773b9522a5c62
+    #JKHgit checkout eff83ae37d98c66534366ba3c8d773b9522a5c62          
+
+    #09Oct develop  -- don't need FV3 parameter to compile
 #JKH    git clone https://github.com/ufs-community/ufs-weather-model ufs-weather-model-b00a11f  >> ${topdir}/checkout-ufs-b00a11f.log 2>&1
 #JKH    cd ufs-weather-model-b00a11f
-#JKH    git checkout b00a11f
+#JKH    git checkout b00a11f                      
+
+    #17Sep develop  -- need FV3 parameter to compile
     git clone https://github.com/ufs-community/ufs-weather-model ufs-weather-model >> ${topdir}/checkout-ufs-2a6528d.log 2>&1
     cd ufs-weather-model
-    git checkout 2a6528d
+    git checkout 2a6528d                          #17Sep develop  -- need FV3 parameter to compile
     git submodule sync
     git submodule update --init --recursive
     cd ${topdir}
 #JKH    ln -fs ufs-weather-model-b00a11f fv3gfs_ccpp.fd 
     ln -fs ufs-weather-model fv3gfs_ccpp.fd 
-    #JKHln -fs fv3gfs_ccpp.fd fv3gfs.fd
 else
     echo 'Skip.  Directory fv3gfs_ccpp.fd already exists.'
 fi
