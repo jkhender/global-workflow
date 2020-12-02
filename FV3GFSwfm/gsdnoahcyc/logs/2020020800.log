@@ -1,0 +1,27 @@
+2020-11-25 23:57:48 +0000 :: hfe03 :: Submitting gdasaeroic
+2020-11-25 23:57:48 +0000 :: hfe03 :: Submission status of gdasaeroic is pending at druby://hfe03:46533
+2020-11-25 23:59:31 +0000 :: hfe03 :: Submission status of previously pending gdasaeroic is success, jobid=14024426
+2020-11-25 23:59:31 +0000 :: hfe03 :: Task gdasaeroic, jobid=14024426, in state FAILED (FAILED), ran for 6.0 seconds, exit status=32512, try=1 (of 2)
+2020-11-25 23:59:31 +0000 :: hfe03 :: Submitting gdasaeroic
+2020-11-25 23:59:31 +0000 :: hfe03 :: Submitting enkfaero001
+2020-11-25 23:59:31 +0000 :: hfe03 :: Submitting enkfaero002
+2020-11-25 23:59:31 +0000 :: hfe03 :: Submission of gdasaeroic succeeded, jobid=14024430
+2020-11-25 23:59:31 +0000 :: hfe03 :: Submission of enkfaero001 succeeded, jobid=14024431
+2020-11-25 23:59:31 +0000 :: hfe03 :: Submission of enkfaero002 succeeded, jobid=14024432
+2020-11-26 00:05:34 +0000 :: hfe03 :: Task gdasaeroic, jobid=14024430, in state DEAD (FAILED), ran for 7.0 seconds, exit status=32512, try=2 (of 2)
+2020-11-26 00:05:34 +0000 :: hfe03 :: Task enkfaero001, jobid=14024431, in state FAILED (FAILED), ran for 7.0 seconds, exit status=32512, try=1 (of 2)
+2020-11-26 00:05:34 +0000 :: hfe03 :: Task enkfaero002, jobid=14024432, in state FAILED (FAILED), ran for 4.0 seconds, exit status=32512, try=1 (of 2)
+2020-11-26 00:05:34 +0000 :: hfe03 :: Submitting enkfaero001
+2020-11-26 00:05:34 +0000 :: hfe03 :: Submitting enkfaero002
+2020-11-26 00:05:34 +0000 :: hfe03 :: Submission status of enkfaero001 is pending at druby://hfe03:38127
+2020-11-26 00:05:34 +0000 :: hfe03 :: Submission status of enkfaero002 is pending at druby://hfe03:38127
+2020-11-26 00:13:31 +0000 :: hfe03 :: Submission status of previously pending enkfaero001 is success, jobid=14024491
+2020-11-26 00:13:31 +0000 :: hfe03 :: Submission status of previously pending enkfaero002 is success, jobid=14024492
+2020-11-26 00:13:31 +0000 :: hfe03 :: Task enkfaero001, jobid=14024491, in state DEAD (FAILED), ran for 4.0 seconds, exit status=127, try=2 (of 2)
+2020-11-26 00:13:31 +0000 :: hfe03 :: Task enkfaero002, jobid=14024492, in state DEAD (FAILED), ran for 4.0 seconds, exit status=127, try=2 (of 2)
+2020-11-26 00:13:40 +0000 :: hfe03 :: Submitting gdasaeroic
+2020-11-26 00:13:40 +0000 :: hfe03 :: Submitting enkfaero001
+2020-11-26 00:13:40 +0000 :: hfe03 :: Submitting enkfaero002
+2020-11-26 00:13:40 +0000 :: hfe03 :: Submission of gdasaeroic succeeded, jobid=14024608
+2020-11-26 00:13:40 +0000 :: hfe03 :: Submission of enkfaero001 succeeded, jobid=14024609
+2020-11-26 00:13:40 +0000 :: hfe03 :: Submission status of enkfaero002 is pending at druby://hfe03:42038

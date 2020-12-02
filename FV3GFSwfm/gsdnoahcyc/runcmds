@@ -1,0 +1,6 @@
+rocotorun -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/emc_feature_lgan/FV3GFSwfm/gsdnoahcyc/aeroics.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/emc_feature_lgan/FV3GFSwfm/gsdnoahcyc/aeroics.db
+rocotostat -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/emc_feature_lgan/FV3GFSwfm/gsdnoahcyc/aeroics.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/emc_feature_lgan/FV3GFSwfm/gsdnoahcyc/aeroics.db
+
+rocotorun -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/emc_feature_lgan/FV3GFSwfm/gsdnoahcyc/gsdnoahcyc.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/emc_feature_lgan/FV3GFSwfm/gsdnoahcyc/gsdnoahcyc.db
+rocotostat -w /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/emc_feature_lgan/FV3GFSwfm/gsdnoahcyc/gsdnoahcyc.xml -d /scratch2/BMC/gsd-fv3-dev/Judy.K.Henderson/test/emc_feature_lgan/FV3GFSwfm/gsdnoahcyc/gsdnoahcyc.db
+
