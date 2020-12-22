@@ -1,3 +1,7 @@
+Dec 22, 2020
+------------
+ - modify getic* scripts to put nemsio files under ICSDIR/YYYYMMDDHH/gfs/gfs.YYMMDD/HH
+
 Nov 03, 2020
 ------------
  - compile Aug13 gsd/develop branch, eff83a
@@ -6,7 +10,9 @@ Oct 31, 2020
 ------------
  - restart cycGSDnoah c384 experiment 
 
-Oct 
+Oct 29, 2020
+------------
+ - updated to 29Oct port2orion branch, c9e0566
 
 Oct 22, 2020
 ------------

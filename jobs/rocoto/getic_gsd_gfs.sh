@@ -21,7 +21,7 @@ echo
 yyyymmdd=`echo $CDATE | cut -c1-8`
 hh=`echo $CDATE | cut -c9-10`
 yyddd=`date +%y%j -u -d $yyyymmdd`
-fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}
+fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}/$CDUMP.$yyyymmdd/$hh
 
 ## create links in FV3ICS directory
 mkdir -p $fv3ic_dir
