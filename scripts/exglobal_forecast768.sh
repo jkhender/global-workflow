@@ -968,6 +968,7 @@ deflate_level=${deflate_level:-1}
   d2_bg = 0.
   nord = ${nord:-3}
   nord_tr = ${nord_tr:-2}
+  trdm2 = ${trdm2:-0.0004}
   dddmp = ${dddmp:-0.2}
   d4_bg = ${d4_bg:-0.15}
   vtdm4 = $vtdm4
@@ -1000,6 +1001,7 @@ deflate_level=${deflate_level:-1}
   agrid_vel_rst = ${agrid_vel_rst:-".true."}
   read_increment = $read_increment
   res_latlon_dynamics = $res_latlon_dynamics
+  inline_q = ${inline_q:-".false."}
   $fv_core_nml
 /
 

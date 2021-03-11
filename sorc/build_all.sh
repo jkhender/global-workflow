@@ -73,7 +73,7 @@ echo " .... Library build not currently supported .... "
 $Build_fv3gfs && {
 echo " .... Building fv3 .... "
 export RUN_CCPP=${RUN_CCPP:-"NO"}
-./build_fv3.sh > $logs_dir/build_fv3.log 2>&1
+./build_fv3_26feb.sh > $logs_dir/build_fv3.log 2>&1
 rc=$?
 if [[ $rc -ne 0 ]] ; then
     echo "Fatal error in building fv3."
