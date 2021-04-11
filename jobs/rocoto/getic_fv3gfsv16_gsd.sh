@@ -1,6 +1,6 @@
-#!/bin/sh 
+#!/bin/ksh  -x
 
-## this script makes links to FV3GFS (GFSv15.1) netcdf files under /public and copies over GFS analysis file for verification
+## this script makes links to FV3GFS netcdf files under /public and copies over GFS analysis file for verification
 ##   /scratch4/BMC/rtfim/rtfuns/FV3GFS/FV3ICS/YYYYMMDDHH/gfs
 ##     gfs.tHHz.sfcanl.nc -> /scratch4/BMC/public/data/grids/gfs/netcdf/YYDDDHH00.gfs.tHHz.sfcanl.nc
 ##     gfs.tHHz.atmanl.nc -> /scratch4/BMC/public/data/grids/gfs/netcdf/YYDDDHH00.gfs.tHHz.atmanl.nc
@@ -29,14 +29,8 @@ echo
 yyyymmdd=`echo $CDATE | cut -c1-8`
 hh=`echo $CDATE | cut -c9-10`
 yyddd=`date +%y%j -u -d $yyyymmdd`
-fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}/$CDUMP.$yyyymmdd/$hh
-
-## EMC archive on disk
-##    /scratch1/NCEPDEV/rstprod/com/gfs/prod
-##         gfs.t00z.atmanl.nemsio
-##         gfs.t00z.sfcanl.nemsio
-##
-EMCDIR=/scratch1/NCEPDEV/rstprod/com/gfs/prod
+#fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}/$CDUMP.$yyyymmdd/$hh
+fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}
 
 ## create links in FV3ICS directory
 mkdir -p $fv3ic_dir

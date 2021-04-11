@@ -28,7 +28,8 @@ echo
 yyyymmdd=`echo $CDATE | cut -c1-8`
 hh=`echo $CDATE | cut -c9-10`
 yyddd=`date +%y%j -u -d $yyyymmdd`
-fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}/$CDUMP.$yyyymmdd/$hh
+#fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}/$CDUMP.$yyyymmdd/$hh
+fv3ic_dir=$ICSDIR/${CDATE}/${CDUMP}
 
 ## EMC archive on disk
 ##    /scratch1/NCEPDEV/rstprod/com/gfs/prod
