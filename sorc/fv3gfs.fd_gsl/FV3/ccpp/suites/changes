@@ -1,0 +1,22 @@
+v16_gf
+
+  add
+      <scheme>cu_gf_driver_pre</scheme>
+      <scheme>cu_gf_driver</scheme>
+      <scheme>cu_gf_driver_post</scheme>
+
+  remove 
+      <scheme>samfdeepcnv</scheme>
+      <scheme>samfshalcnv</scheme>
+
+
+v16_mynn
+  add 
+      <scheme>sgscloud_radpre</scheme>
+      <scheme>sgscloud_radpost</scheme>
+      <scheme>mynnedmf_wrapper</scheme>
+
+  remove
+      <scheme>GFS_PBL_generic_pre</scheme>
+      <scheme>satmedmfvdifq</scheme>
+      <scheme>GFS_PBL_generic_post</scheme>

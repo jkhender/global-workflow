@@ -1,0 +1,6 @@
+rocotorun  -w /home/Judy.K.Henderson/scratch/gslv16_rt/FV3GFSwfm/gfs_l127_12x8/gfs_l127_12x8.xml -d /home/Judy.K.Henderson/scratch/gslv16_rt/FV3GFSwfm/gfs_l127_12x8/gfs_l127_12x8.db
+rocotostat -w /home/Judy.K.Henderson/scratch/gslv16_rt/FV3GFSwfm/gfs_l127_12x8/gfs_l127_12x8.xml -d /home/Judy.K.Henderson/scratch/gslv16_rt/FV3GFSwfm/gfs_l127_12x8/gfs_l127_12x8.db
+
+
+rocotorun  -w gfs_l127_12x8.xml -d gfs_l127_12x8.db
+rocotostat  -w gfs_l127_12x8.xml -d gfs_l127_12x8.db
