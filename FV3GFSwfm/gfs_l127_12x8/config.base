@@ -109,7 +109,7 @@ fi
 export RUNDIR="$STMP/RUNDIRS/$PSLOT"
 export DATAROOT="$RUNDIR/$CDATE/$CDUMP"
 export ARCDIR="$NOSCRUB/archive/$PSLOT"
-export ICSDIR="/home/Judy.K.Henderson/scratch/gslv16_rt//FV3GFSrun/FV3ICS"
+export ICSDIR="/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/FV3GFSrun/FV3ICS"
 export ATARDIR="/BMC/$HPSS_PROJECT/1year/GSL_phys_tst_2021/$PSLOT"
 
 # Commonly defined parameters in JJOBS
@@ -144,9 +144,12 @@ export CASE_ENKF="@CASEENS@"
 
 # Run with CCPP physics
 export RUN_CCPP="YES"
-export CCPP_SUITE="FV3_GFS_v16"   # EMC v16beta
-#### export CCPP_SUITE="FV3_GSD_v0"        # GSDsuite 
-#### export CCPP_SUITE="FV3_GSD_noah"      # GSDsuite + NOAH LSM  
+export CCPP_SUITE="FV3_GFS_v16"                # GFS v16
+#### export CCPP_SUITE="FV3_GSD_v0"            # GSDsuite 
+#### export CCPP_SUITE="FV3_GSD_noah"          # GSDsuite + NOAH LSM  
+#### export CCPP_SUITE="FV3_GFS_v16_gf"        # GFS v16 + GF
+#### export CCPP_SUITE="FV3_GFS_v16_mynn"      # GFS v16 + MYNN
+#### export CCPP_SUITE="FV3_GFS_v16_thompson"  # GFS v16 + Thompson
 
 # Surface cycle update frequency
 if [[ "$CDUMP" == "gdas" ]] ; then

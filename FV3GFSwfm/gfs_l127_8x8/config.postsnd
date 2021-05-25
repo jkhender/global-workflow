@@ -9,5 +9,6 @@ echo "BEGIN: config.postsnd"
 . $EXPDIR/config.resources postsnd
 
 export POSTSNDSH=$HOMEgfs/jobs/JGFS_ATMOS_POSTSND
+export ENDHOUR=120                ## JKH
 
 echo "END: config.postsnd"
