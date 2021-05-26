@@ -1,3 +1,8 @@
+25 May 2021
+  -- added experiment directories:  GFSv16+GF, GFSv16+MYNN, GFSv16+THMP
+19 May 2021
+  -- created gslv16_hfip branch from gslv16_rt branch
+
 17 Apr 2021
     - update to 18Mar21 gsl/develop branch, f204bfd, for sorc/fv3gfs_ccpp.fd
     - switch to using chgres_cube to generate FV3 ICs, including aerosol variables

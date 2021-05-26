@@ -135,8 +135,8 @@ export SENDDBN=${SENDDBN:-"NO"}
 export DBNROOT=${DBNROOT:-${UTILROOT}/fakedbn}
 
 # Resolution specific parameters
-#JKHexport LEVS=128
-export LEVS=65
+export LEVS=128
+#JKHexport LEVS=65
 export CASE="C768"
 export CASE_ENKF="@CASEENS@"
 

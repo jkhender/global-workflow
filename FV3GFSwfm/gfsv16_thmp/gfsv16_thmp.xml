@@ -36,8 +36,11 @@
 	<!ENTITY JOBS_DIR "/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/jobs/rocoto">
 
 	<!-- Machine related entities -->
+	<!ENTITY ACCOUNT    "gsd-fv3">
 	<!ENTITY ACCOUNT    "gsd-fv3-dev">
 	<!ENTITY QUEUE      "batch">
+	<!ENTITY QUEUE_URG  "urgent">
+	<!ENTITY QUEUE_DEBUG "debug">
 	<!ENTITY QUEUE_SERVICE "service">
 	<!ENTITY PARTITION_SERVICE "service">
 	<!ENTITY SCHEDULER  "slurm">
@@ -74,6 +77,7 @@
 	<!ENTITY RESOURCES_WAVEPREP_GFS "<nodes>2:ppn=40:tpp=1</nodes>">
 	<!ENTITY NATIVE_WAVEPREP_GFS    "--export=NONE">
 
+	<!ENTITY QUEUE_FCST_GFS     "&QUEUE_URG;">
 	<!ENTITY QUEUE_FCST_GFS     "&QUEUE;">
 	<!ENTITY WALLTIME_FCST_GFS  "02:00:00">
 	<!ENTITY RESOURCES_FCST_GFS "<nodes>103:ppn=10:tpp=4</nodes>">
