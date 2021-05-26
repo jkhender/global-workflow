@@ -1,0 +1,2 @@
+rocotorun -w gfsv16_mynn.xml -d gfsv16_mynn.db
+rocotostat -w gfsv16_mynn.xml -d gfsv16_mynn.db

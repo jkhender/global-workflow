@@ -1,0 +1,2 @@
+rocotorun -w gfsv16_thmp.xml -d gfsv16_thmp.db
+rocotostat -w gfsv16_thmp.xml -d gfsv16_thmp.db

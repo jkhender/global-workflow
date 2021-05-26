@@ -1,0 +1,2 @@
+rocotorun -w gfs_l127_12x12.xml -d gfs_l127_12x12.db
+rocotostat -w gfs_l127_12x12.xml -d gfs_l127_12x12.db
