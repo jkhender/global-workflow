@@ -135,8 +135,8 @@ export SENDDBN=${SENDDBN:-"NO"}
 export DBNROOT=${DBNROOT:-${UTILROOT}/fakedbn}
 
 # Resolution specific parameters
-#JKHexport LEVS=128
-export LEVS=65
+export LEVS=128
+#JKHexport LEVS=65
 export CASE="@CASECTL@"
 export CASE_ENKF="@CASEENS@"
 
@@ -144,8 +144,7 @@ export CASE_ENKF="@CASEENS@"
 export RUN_CCPP="YES"
 #### export CCPP_SUITE="FV3_GFS_v16"       # GFS v16
 #### export CCPP_SUITE="FV3_GSD_v0"        # GSDsuite 
-#### export CCPP_SUITE="FV3_GSD_noah"      # GSDsuite + NOAH LSM  
-export CCPP_SUITE="FV3_GFS_v16_thompson"   # GFS v16 + Thompson
+export CCPP_SUITE="FV3_GSD_noah"      # GSDsuite + NOAH LSM  
 
 # Surface cycle update frequency
 if [[ "$CDUMP" == "gdas" ]] ; then
@@ -234,7 +233,7 @@ export DO_WAVE="NO"                ## JKH
 export WAVE_CDUMP="both"
 
 # Microphysics Options: 99-ZhaoCarr, 8-Thompson; 6-WSM6, 10-MG, 11-GFDL
-if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah"  || "$CCPP_SUITE" == "FV3_GFSv16_thompson" ]] ; then
+if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah"  || "$CCPP_SUITE" == "FV3_GFS_v16_thompson" ]] ; then
        export imp_physics=8
 else
        export imp_physics=11

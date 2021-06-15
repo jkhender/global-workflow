@@ -10,7 +10,7 @@
 		rahul.mahajan@noaa.gov
 
 	NOTES:
-		This workflow was automatically generated at 2021-05-24 22:14:39.901038
+		This workflow was automatically generated at 2021-05-25 19:20:49.876154
 	-->
 
 	<!-- Experiment parameters such as name, cycle, resolution -->
@@ -27,17 +27,19 @@
 	<!ENTITY RUN_ENVIR "emc">
 
 	<!-- Experiment related directories -->
-	<!ENTITY EXPDIR "/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/FV3GFSwfm/gfsv16_gf">
-	<!ENTITY ROTDIR "/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/FV3GFSrun/gfsv16_gf">
-	<!ENTITY ICSDIR "/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/FV3GFSrun/FV3ICS">
+	<!ENTITY EXPDIR "/home/Judy.K.Henderson/scratch/gslv16_hfip//FV3GFSwfm/gfsv16_gf">
+	<!ENTITY ROTDIR "/home/Judy.K.Henderson/scratch/gslv16_hfip//FV3GFSrun/gfsv16_gf">
+	<!ENTITY ICSDIR "/home/Judy.K.Henderson/scratch/gslv16_hfip//FV3GFSrun/FV3ICS">
 
 	<!-- Directories for driving the workflow -->
-	<!ENTITY HOMEgfs  "/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip">
-	<!ENTITY JOBS_DIR "/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/jobs/rocoto">
+	<!ENTITY HOMEgfs  "/mnt/lfs4/BMC/gsd-fv3-dev/Judy.K.Henderson/scratch/gslv16_hfip">
+	<!ENTITY JOBS_DIR "/mnt/lfs4/BMC/gsd-fv3-dev/Judy.K.Henderson/scratch/gslv16_hfip/jobs/rocoto">
 
 	<!-- Machine related entities -->
 	<!ENTITY ACCOUNT    "gsd-fv3-dev">
 	<!ENTITY QUEUE      "batch">
+	<!ENTITY QUEUE_URG  "urgent">
+	<!ENTITY QUEUE_DEBUG "debug">
 	<!ENTITY QUEUE_SERVICE "service">
 	<!ENTITY PARTITION_SERVICE "service">
 	<!ENTITY SCHEDULER  "slurm">
@@ -64,105 +66,25 @@
 	<!ENTITY RESOURCES_INIT_GFS "<nodes>4:ppn=6:tpp=1</nodes>">
 	<!ENTITY NATIVE_INIT_GFS    "--export=NONE">
 
-	<!ENTITY QUEUE_WAVEINIT_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAVEINIT_GFS  "00:10:00">
-	<!ENTITY RESOURCES_WAVEINIT_GFS "<nodes>1:ppn=40:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAVEINIT_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAVEPREP_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAVEPREP_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAVEPREP_GFS "<nodes>2:ppn=40:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAVEPREP_GFS    "--export=NONE">
-
+	<!ENTITY QUEUE_FCST_GFS     "&QUEUE_URG;">
 	<!ENTITY QUEUE_FCST_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_FCST_GFS  "06:00:00">
-	<!ENTITY RESOURCES_FCST_GFS "<nodes>103:ppn=10:tpp=4</nodes>">
+	<!ENTITY QUEUE_FCST_GFS     "&QUEUE_DEBUG;">
+	<!ENTITY PARTITION_FCST_GFS "vjet">
+	<!ENTITY WALLTIME_FCST_GFS  "01:00:00">
+	<!ENTITY RESOURCES_FCST_GFS "<nodes>112:ppn=4:tpp=4</nodes>">        <!-- 8x8; 4th -->
+	<!ENTITY RESOURCES_FCST_GFS "<nodes>232:ppn=4:tpp=4</nodes>">        <!-- 12x12; 4th -->
+	<!ENTITY RESOURCES_FCST_GFS "<nodes>116:ppn=8:tpp=2</nodes>">        <!-- 12x12; 2th -->
 	<!ENTITY NATIVE_FCST_GFS    "--export=NONE">
 
 	<!ENTITY QUEUE_POST_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_POST_GFS  "06:00:00">
-	<!ENTITY RESOURCES_POST_GFS "<nodes>10:ppn=12:tpp=1</nodes>">
+	<!ENTITY PARTITION_POST_GFS "vjet">
+	<!ENTITY WALLTIME_POST_GFS  "00:40:00">
+	<!ENTITY RESOURCES_POST_GFS "<nodes>3:ppn=16:tpp=1</nodes>">
 	<!ENTITY NATIVE_POST_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAVEPOSTSBS_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAVEPOSTSBS_GFS  "06:00:00">
-	<!ENTITY RESOURCES_WAVEPOSTSBS_GFS "<nodes>1:ppn=40:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAVEPOSTSBS_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAVEPOSTBNDPNT_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAVEPOSTBNDPNT_GFS  "02:00:00">
-	<!ENTITY RESOURCES_WAVEPOSTBNDPNT_GFS "<nodes>7:ppn=40:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAVEPOSTBNDPNT_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAVEPOSTPNT_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAVEPOSTPNT_GFS  "02:00:00">
-	<!ENTITY RESOURCES_WAVEPOSTPNT_GFS "<nodes>7:ppn=40:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAVEPOSTPNT_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAVEGEMPAK_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAVEGEMPAK_GFS  "01:00:00">
-	<!ENTITY RESOURCES_WAVEGEMPAK_GFS "<nodes>1:ppn=40:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAVEGEMPAK_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAVEAWIPSBULLS_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAVEAWIPSBULLS_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAVEAWIPSBULLS_GFS "<nodes>1:ppn=40:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAVEAWIPSBULLS_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAVEAWIPSGRIDDED_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAVEAWIPSGRIDDED_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAVEAWIPSGRIDDED_GFS "<nodes>1:ppn=40:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAVEAWIPSGRIDDED_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAFS_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAFS_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAFS_GFS "<nodes>1:ppn=1:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAFS_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAFSGRIB2_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAFSGRIB2_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAFSGRIB2_GFS "<nodes>1:ppn=1:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAFSGRIB2_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAFSBLENDING_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAFSBLENDING_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAFSBLENDING_GFS "<nodes>1:ppn=1:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAFSBLENDING_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAFSGCIP_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAFSGCIP_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAFSGCIP_GFS "<nodes>2:ppn=1:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAFSGCIP_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAFSGRIB20P25_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAFSGRIB20P25_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAFSGRIB20P25_GFS "<nodes>1:ppn=1:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAFSGRIB20P25_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_WAFSBLENDING0P25_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_WAFSBLENDING0P25_GFS  "00:30:00">
-	<!ENTITY RESOURCES_WAFSBLENDING0P25_GFS "<nodes>1:ppn=1:tpp=1</nodes>">
-	<!ENTITY NATIVE_WAFSBLENDING0P25_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_POSTSND_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_POSTSND_GFS  "02:00:00">
-	<!ENTITY RESOURCES_POSTSND_GFS "<nodes>20:ppn=2:tpp=1</nodes>">
-	<!ENTITY NATIVE_POSTSND_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_GEMPAK_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_GEMPAK_GFS  "02:00:00">
-	<!ENTITY RESOURCES_GEMPAK_GFS "<nodes>5:ppn=4:tpp=3</nodes>">
-	<!ENTITY NATIVE_GEMPAK_GFS    "--export=NONE">
-
-	<!ENTITY QUEUE_AWIPS_GFS     "&QUEUE;">
-	<!ENTITY WALLTIME_AWIPS_GFS  "03:30:00">
-	<!ENTITY RESOURCES_AWIPS_GFS "<nodes>1:ppn=4:tpp=2</nodes>">
-	<!ENTITY NATIVE_AWIPS_GFS    "--export=NONE">
 
 	<!ENTITY QUEUE_VRFY_GFS     "&QUEUE;">
 	<!ENTITY WALLTIME_VRFY_GFS  "06:00:00">
 	<!ENTITY RESOURCES_VRFY_GFS "<nodes>1:ppn=1:tpp=1</nodes>">
-	<!ENTITY MEMORY_VRFY_GFS    "16384M">
 	<!ENTITY NATIVE_VRFY_GFS    "--export=NONE">
 
 	<!ENTITY QUEUE_METP_GFS     "&QUEUE;">
@@ -188,6 +110,7 @@
 	<!-- Define the cycles -->
 	<cycledef group="gfs">&SDATE; &EDATE; &INTERVAL;</cycledef>
 
+<!--
 <task name="gfsgetic" cycledefs="gfs" maxtries="&MAXTRIES;">
 
 	<command>&JOBS_DIR;/getic.sh</command>
@@ -257,6 +180,7 @@
 
 </task>
 
+-->
 <task name="gfsfcst" cycledefs="gfs" maxtries="&MAXTRIES;">
 
 	<command>&JOBS_DIR;/fcst.sh</command>
@@ -264,6 +188,7 @@
 	<jobname><cyclestr>&PSLOT;_gfsfcst_@H</cyclestr></jobname>
 	<account>&ACCOUNT;</account>
 	<queue>&QUEUE_FCST_GFS;</queue>
+        <partition>&PARTITION_FCST_GFS;</partition>
 	&RESOURCES_FCST_GFS;
 	<walltime>&WALLTIME_FCST_GFS;</walltime>
 	
@@ -292,9 +217,13 @@
 
 <metatask name="gfspost">
 
-	<var name="grp">001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021</var>
-	<var name="dep">f000 f006 f012 f018 f024 f030 f036 f042 f048 f054 f060 f066 f072 f078 f084 f090 f096 f102 f108 f114 f120</var>
-	<var name="lst">f000 f006 f012 f018 f024 f030 f036 f042 f048 f054 f060 f066 f072 f078 f084 f090 f096 f102 f108 f114 f120</var>
+	<!--<var name="grp">001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029</var>
+	<var name="dep">f000 f006 f012 f018 f024 f030 f036 f042 f048 f054 f060 f066 f072 f078 f084 f090 f096 f102 f108 f114 f120 f126 f132 f138 f144 f150 f156 f162 f168</var>
+	<var name="lst">f000 f006 f012 f018 f024 f030 f036 f042 f048 f054 f060 f066 f072 f078 f084 f090 f096 f102 f108 f114 f120 f126 f132 f138 f144 f150 f156 f162 f168</var>
+-->
+	<var name="grp">001 002 003 004 005 </var>
+	<var name="dep">f000 f006 f012 f018 f024 </var>
+	<var name="lst">f000 f006 f012 f018 f024 </var>
 
 	<task name="gfspost#grp#" cycledefs="gfs" maxtries="&MAXTRIES;">
 
@@ -303,6 +232,7 @@
 		<jobname><cyclestr>&PSLOT;_gfspost#grp#_@H</cyclestr></jobname>
 		<account>&ACCOUNT;</account>
 		<queue>&QUEUE_POST_GFS;</queue>
+                <partition>&PARTITION_POST_GFS;</partition>
 		&RESOURCES_POST_GFS;
 		<walltime>&WALLTIME_POST_GFS;</walltime>
 		
@@ -329,6 +259,7 @@
 
 </metatask>
 
+<!--
 <task name="gfsarch" cycledefs="gfs" maxtries="&MAXTRIES;" final="true">
 
 	<command>&JOBS_DIR;/arch_gsd.sh</command>
@@ -361,5 +292,7 @@
 
 </task>
 
+
+-->
 
 </workflow>

@@ -744,6 +744,10 @@ if [ "$CCPP_SUITE" = 'FV3_GSD_v0' -o "$CCPP_SUITE" = 'FV3_GSD_noah' -o "$CCPP_SU
 fi
 fi
 
+# JKH   copy yaml file over
+cp $HOMEgfs/sorc/fv3gfs.fd/tests/parm/fd_nems.yaml fd_nems.yaml
+#cp $HOMEgfs/sorc/thompson_subcyc/tests/parm/fd_nems.yaml fd_nems.yaml
+
 #------------------------------------------------------------------
 rm -f nems.configure
 

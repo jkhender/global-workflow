@@ -83,7 +83,7 @@ export NLN="/bin/ln -sf"
 export VERBOSE="YES"
 export KEEPDATA="NO"
 export CHGRP_RSTPROD="YES"
-export CHGRP_CMD="chgrp rstprrod"
+export CHGRP_CMD="chgrp rstprod"
 export NEMSIOGET="$HOMEgfs/exec/nemsio_get"
 export NCDUMP="$NETCDF/bin/ncdump"
 export NCLEN="$HOMEgfs/ush/getncdimlen"
@@ -109,7 +109,7 @@ fi
 export RUNDIR="$STMP/RUNDIRS/$PSLOT"
 export DATAROOT="$RUNDIR/$CDATE/$CDUMP"
 export ARCDIR="$NOSCRUB/archive/$PSLOT"
-export ICSDIR="/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/FV3GFSrun/FV3ICS"
+export ICSDIR="/home/Judy.K.Henderson/scratch/gslv16_rt//FV3GFSrun/FV3ICS"
 export ATARDIR="/BMC/$HPSS_PROJECT/1year/GSL_phys_tst_2021/$PSLOT"
 
 # Commonly defined parameters in JJOBS
@@ -244,7 +244,7 @@ if [[ "$SDATE" -lt "2019020100" ]]; then DO_WAVE="NO" ; fi # no rtofs in GDA
 export WAVE_CDUMP="both"
 
 # Microphysics Options: 99-ZhaoCarr, 8-Thompson; 6-WSM6, 10-MG, 11-GFDL
-if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" ]] ; then
+if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" || "$CCPP_SUITE" == "FV3_GFS_v16_thompson" ]] ; then
        export imp_physics=8
 else
        export imp_physics=11

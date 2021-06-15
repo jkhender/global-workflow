@@ -1,0 +1,2 @@
+rocotorun -w gfsv16_thmp_subcyc.xml -d gfsv16_thmp_subcyc.db
+rocotostat -w gfsv16_thmp_subcyc.xml -d gfsv16_thmp_subcyc.db

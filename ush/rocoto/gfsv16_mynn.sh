@@ -1,5 +1,5 @@
 USER=Judy.K.Henderson
-GITDIR=/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip     ## where your git checkout is located
+GITDIR=/home/Judy.K.Henderson/scratch/gslv16_hfip/                     ## where your git checkout is located
 COMROT=$GITDIR/FV3GFSrun                                         ## default COMROT directory
 EXPDIR=$GITDIR/FV3GFSwfm                                         ## default EXPDIR directory
 
@@ -11,9 +11,9 @@ IDATE=2021051700
 EDATE=2021051700
 RESDET=768               ## 96 192 384 768
 
-ln -fs ${GITDIR}/parm/config/config.base.emc.dyn_hera_mynn ${GITDIR}/parm/config/config.base.emc.dyn
-ln -fs ${GITDIR}/parm/config/config.base.emc.dyn_hera_mynn ${GITDIR}/parm/config/config.base
-ln -fs ${GITDIR}/parm/config/config.postsnd_hera ${GITDIR}/parm/config/config.postsnd
+ln -fs ${GITDIR}/parm/config/config.base.emc.dyn_jet_mynn ${GITDIR}/parm/config/config.base.emc.dyn
+ln -fs ${GITDIR}/parm/config/config.base.emc.dyn_jet_mynn ${GITDIR}/parm/config/config.base
+ln -fs ${GITDIR}/parm/config/config.postsnd_jet ${GITDIR}/parm/config/config.postsnd
 
 ### gfs_cyc 1  00Z only;  gfs_cyc 2  00Z and 12Z
 

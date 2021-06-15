@@ -1,0 +1,2 @@
+rocotorun -w gfsv16_gf.xml -d gfsv16_gf.db
+rocotostat -w gfsv16_gf.xml -d gfsv16_gf.db

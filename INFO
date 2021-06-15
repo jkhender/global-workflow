@@ -1,3 +1,7 @@
+14 Jun 2021
+  -- update to 07Jun21 gsl/develop branch, b60e5fe, for sorc/fv3gfs_ccpp.fd
+       - change compilation parameters:  add APP=ATM
+       - copy yaml file to RUNDIRS directory
 25 May 2021
   -- added experiment directories:  GFSv16+GF, GFSv16+MYNN, GFSv16+THMP
 19 May 2021

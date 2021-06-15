@@ -75,7 +75,7 @@ fi
 
 # PBL/turbulence schemes
 export hybedmf=".false."
-if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" ]] ; then
+if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" || "$CCPP_SUITE" == "FV3_GFS_v16_mynn" ]] ; then
     export satmedmf=".false."
     export isatmedmf=0
     export shal_cnv=".true."       
@@ -124,7 +124,7 @@ export icliq_sw=2   ;#cloud optical coeffs from AER's newer version v3.9-v4.0 fo
 export output_1st_tstep_rst=".false."                                        #JKH
 
 # Convection Options: 2-SASAS, 3-GF
-if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" ]] ; then
+if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" || "$CCPP_SUITE" == "FV3_GFS_v16_gf" ]] ; then
 	export imfdeepcnv=3
 	export imfshalcnv=3
 else
@@ -150,7 +150,7 @@ elif [ $imp_physics -eq 6 ]; then # WSM6
 
 elif [ $imp_physics -eq 8 ]; then # Thompson
     export nwat=6
-    if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" ]] ; then
+    if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" || "$CCPP_SUITE" == "FV3_GFS_v16_thompson" ]] ; then
         export ncld=5
         export FIELD_TABLE="$HOMEgfs/parm/parm_fv3diag/field_table_gsd"
         export ltaerosol=.true.                  
@@ -165,8 +165,11 @@ elif [ $imp_physics -eq 8 ]; then # Thompson
         export nord=2
         export dddmp=0.1
         export d4_bg=0.12
-        export k_split=6
-        export n_split=2
+
+        if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" ]] ; then
+          export k_split=6                     
+          export n_split=2                     
+        fi
     else
         export ncld=2
         export FIELD_TABLE="$HOMEgfs/parm/parm_fv3diag/field_table_thompson${tbf}"
@@ -174,7 +177,11 @@ elif [ $imp_physics -eq 8 ]; then # Thompson
 
 elif [ $imp_physics -eq 11 ]; then # GFDL
     export ncld=5
-    export FIELD_TABLE="$HOMEgfs/parm/parm_fv3diag/field_table_gfdl${tbf}"
+    if [[ "$CCPP_SUITE" == "FV3_GFS_v16_mynn" ]] ; then
+      export FIELD_TABLE="$HOMEgfs/parm/parm_fv3diag/field_table_gfdl_satmedmf"
+    else
+      export FIELD_TABLE="$HOMEgfs/parm/parm_fv3diag/field_table_gfdl${tbf}"
+    fi
     export nwat=6
     export dnats=1
     export cal_pre=".false."
