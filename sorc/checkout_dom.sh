@@ -29,7 +29,7 @@ echo $topdir
 echo dom_thmpsubcyc checkout ...
 if [[ ! -d dom_thmpsubcyc ]] ; then
     rm -f ${topdir}/checkout-dom.log
-    git clone -b bugfix_thompson_pass_correct_timestep --recursive https://github.com/climbfujii/ufs-weather-model  dom_thmpsubcyc >> ${topdir}/checkout-dom.log 2>&1
+    git clone -b bugfix_thompson_pass_correct_timestep --recursive https://github.com/climbfuji/ufs-weather-model  dom_thmpsubcyc >> ${topdir}/checkout-dom.log 2>&1
     cd dom_thmpsubcyc
     git submodule update --init --recursive
     cd ${topdir}
