@@ -35,7 +35,7 @@ if [[ ! -d ufs-weather-model_16jun_b50c86d ]] ; then
     git submodule update --init --recursive
     cd ${topdir}
     ln -fs ufs-weather-model_16jun_b50c86d fv3gfs_mynn.fd 
-    rsync -ax fv3gfs_mynn.fd_gsl/ fv3gfs_mynn.fd/                    ## copy over MYNN changes not in ccpp-physics repository
+    rsync -ax fv3gfs_mynn.fd_gsl/ fv3gfs_mynn.fd/               ## copy over MYNN changes not in ccpp-physics repository and add new SDF
 else
     echo 'Skip.  Directory fv3gfs_mynn.fd already exists.'
 fi
