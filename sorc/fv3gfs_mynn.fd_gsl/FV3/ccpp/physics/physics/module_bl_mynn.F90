@@ -275,7 +275,7 @@ MODULE module_bl_mynn
   LOGICAL, PARAMETER :: mynn_chem_vertmx = .false.
   LOGICAL, PARAMETER :: enh_vermix = .false.
 
-  !>Of the following teo options, use one OR the other, not both.
+  !>Of the following the options, use one OR the other, not both.
   !>Adding top-down diffusion driven by cloud-top radiative cooling
   INTEGER, PARAMETER :: bl_mynn_topdown = 0
   !>Option to activate downdrafts, from Elynn Wu (0: deactive, 1: active)
@@ -322,6 +322,7 @@ MODULE module_bl_mynn
 !JOE & JAYMES'S mods
 !
 ! Mixing Length Options 
+!\authors Joe and Jaymes
 !   specifed through namelist:  bl_mynn_mixlength
 !   added:  16 Apr 2015
 !
@@ -746,7 +747,6 @@ CONTAINS
 !
        vtt =  1.0 +vt(k)*abk +vt(k-1)*afk  ! Beta-theta in NN09, Eq. 39
        vqq =  tv0 +vq(k)*abk +vq(k-1)*afk  ! Beta-q
-
        dtq =  vtt*dtz +vqq*dqz
 !
        dtl(k) =  dtz
@@ -1072,20 +1072,16 @@ CONTAINS
         cns  = 3.5 !JOE-test  * (1.0 - MIN(MAX(Ugrid - Uonset, 0.0)/10.0, 1.0))
         alp1 = 0.23
         alp2 = 0.30
-        alp3 = 2.0 !JOE-test 2.0
-        alp4 = 10.0 !JOE-test 20.  !10.
+        alp3 = 2.0
+        alp4 = 10.0 !was 20.
         alp5 = alp2 !like alp2, but for free atmosphere
         alp6 = 50.0 !used for MF mixing length
 
         ! Impose limits on the height integration for elt and the transition layer depth
         !zi2=MAX(zi,minzi)
-!JOE-test
-!        zi2=MAX(zi,    100.)
         zi2=MAX(zi,    200.)
-!JOE-test 
-!        h1=MAX(0.3*zi2,mindz)
-!        h1=MIN(h1,maxdz)         ! 1/2 transition layer depth
-!        h1=MAX(0.3*zi2,100.)
+        !h1=MAX(0.3*zi2,mindz)
+        !h1=MIN(h1,maxdz)         ! 1/2 transition layer depth
         h1=MAX(0.3*zi2,200.)
         h1=MIN(h1,500.)
         h2=h1*0.5                ! 1/4 transition layer depth
@@ -1116,7 +1112,7 @@ CONTAINS
            zwk = zw(k)
         END DO
 
-        elt =  MAX(alp1*elt/vsc, 10.)
+        elt = MIN( MAX(alp1*elt/vsc, 10.), 400.)
         vflx = ( vt(kts)+1.0 )*flt +( vq(kts)+tv0 )*flq
         vsc = ( gtr*elt*MAX( vflx, 0.0 ) )**onethird
 
@@ -1706,12 +1702,7 @@ CONTAINS
        elsq = el (k)**2
        q3sq = qkw(k)**2
        q2sq = b1*elsq*( sm(k)*gm(k)+sh(k)*gh(k) )
-       !Remove possiblity of contamination due to spikes, but
-       !allow for very large variations - no impact on idealized cases
-!       elsq = MIN(MAX(elsq,0.1), 160000.) !max el  = 400 m
-!       q3sq = MIN(MAX(q3sq,0.01),    75.) !max tke = 75 m2/s2
-!       q2sq = MIN(MAX(q2sq,0.01),    75.)
-       !end constraints
+
        sh20 = MAX(sh(k), 1e-6)
        sm20 = MAX(sm(k), 1e-6)
        sh(k)= MAX(sh(k), 1e-6)
@@ -1732,7 +1723,7 @@ CONTAINS
        !Prnum = MIN(sm20/sh20, 4.0)
        !The form of Zilitinkevich et al. (2006) but modified
        !following Esau and Grachev (2007, Wind Eng)
-       Prnum = MIN(0.8 + 4.0*MAX(ri,-0.013), Prlimit)
+       Prnum = MIN(0.8 + 4.0*MAX(ri,-0.01), Prlimit)
 !
 !  Modified: Dec/22/2005, from here, (dlsq -> elsq)
        gmel = gm (k)*elsq
@@ -1761,8 +1752,8 @@ CONTAINS
        IF ( q3sq .LT. q2sq ) THEN
           !Apply Helfand & Labraga mod
           qdiv = SQRT( q3sq/q2sq )   !HL89: (1-alfa)
-   !       sm(k) = sm(k) * qdiv
-   !       sh(k) = sh(k) * qdiv
+          sm(k) = sm(k) * qdiv
+          sh(k) = sh(k) * qdiv
 !
           !JOE-Canuto/Kitamura mod
           !e1   = q3sq - e1c*ghel * qdiv**2
@@ -1829,12 +1820,12 @@ CONTAINS
          ENDIF
        ENDIF
 
-       !Enforce constraints for level 2.5 functions
-!       IF ( sh(k) > sh25max ) sh(k) = sh25max
-!       IF ( sh(k) < sh25min ) sh(k) = sh25min
-!!       IF ( sm(k) > sm25max ) sm(k) = sm25max
-!!       IF ( sm(k) < sm25min ) sm(k) = sm25min
-!       sm(k) = Prnum*sh(k)
+       !Enforce additional constraints for level 2.5 functions
+       !IF ( sh(k) > sh25max ) sh(k) = sh25max
+       !IF ( sh(k) < sh25min ) sh(k) = sh25min
+       !IF ( sm(k) > sm25max ) sm(k) = sm25max
+       !IF ( sm(k) < sm25min ) sm(k) = sm25min
+       !sm(k) = Prnum*sh(k)
 
 !   **  Level 3 : start  **
        IF ( closure .GE. 3.0 ) THEN
@@ -1907,10 +1898,10 @@ CONTAINS
 
           IF ( wden .NE. 0.0 ) THEN
              !JOE: test dynamic limits
-             clow = q3sq*( 0.12-cw25 )*eden/wden
-             cupp = q3sq*( 0.76-cw25 )*eden/wden
-!JOE             clow = q3sq*( Rsl -cw25 )*eden/wden
-!JOE             cupp = q3sq*( Rsl2-cw25 )*eden/wden
+             !clow = q3sq*( 0.12-cw25 )*eden/wden
+             !cupp = q3sq*( 0.76-cw25 )*eden/wden
+             clow = q3sq*( Rsl -cw25 )*eden/wden
+             cupp = q3sq*( Rsl2-cw25 )*eden/wden
 !
              IF ( wden .GT. 0.0 ) THEN
                 c3sq  = MIN( MAX( c3sq, c2sq+clow ), c2sq+cupp )
@@ -1984,10 +1975,6 @@ CONTAINS
           gamq = 0.0
           gamv = 0.0
        END IF
-
-!      Prandtl number limit
-!       Prlimit = 4.0
-!       IF (sm(k) > sh(k)*Prlimit) sm(k) = sh(k)*Prlimit
 !
 !      Add min background stability function (diffusivity) within model levels
 !      with active plumes and low cloud fractions.
@@ -2059,7 +2046,6 @@ CONTAINS
        
        !! Buoyncy term takes the TKEprodTD(k) production now
        qBUOY1D(k) = elq*(sh(k)*gh(k)+gamv)+TKEprodTD(k) !staggared
-       !!
 
        !!!Dissipation Term (now it evaluated on mym_predict)
        !qDISS1D(k) = (q3sq**(3./2.))/(b1*MAX(el(k),1.)) !! ORIGINAL CODE
@@ -2301,7 +2287,7 @@ CONTAINS
     d(kte)=0.
 
 !    CALL tridiag(kte,a,b,c,d)
-    CALL tridiag3(kte,a,b,c,d,x)
+    CALL tridiag2(kte,a,b,c,d,x)
 
     DO k=kts,kte
 !       qke(k)=max(d(k-kts+1), 1.e-4)
@@ -2357,9 +2343,9 @@ CONTAINS
        c(kte)=0.
        d(kte)=0.
 
-       !CALL tridiag(kte,a,b,c,d)
-       CALL tridiag3(kte,a,b,c,d,x)
-
+!       CALL tridiag(kte,a,b,c,d)
+    CALL tridiag2(kte,a,b,c,d,x)
+       
        DO k=kts,kte
           !qsq(k)=d(k-kts+1)
           qsq(k)=MAX(x(k),1e-12)
@@ -2421,10 +2407,10 @@ CONTAINS
        b(kte)=1.
        c(kte)=0.
        d(kte)=0.
-
-!       CALL tridiag(kte,a,b,c,d)
-    CALL tridiag3(kte,a,b,c,d,x)
        
+!       CALL tridiag(kte,a,b,c,d)
+       CALL tridiag2(kte,a,b,c,d,x)
+
        DO k=kts,kte
 !          tsq(k)=d(k-kts+1)
            tsq(k)=x(k)
@@ -2471,8 +2457,8 @@ CONTAINS
        d(kte)=0.
 
 !       CALL tridiag(kte,a,b,c,d)
-    CALL tridiag3(kte,a,b,c,d,x)
-
+    CALL tridiag2(kte,a,b,c,d,x)
+       
        DO k=kts,kte
 !          cov(k)=d(k-kts+1)
           cov(k)=x(k)
@@ -2580,7 +2566,7 @@ CONTAINS
 
     REAL :: erf
 
-    !VARIABLES FOR ALTERNATIVE SIMGA
+    !VARIABLES FOR ALTERNATIVE SIGMA
     REAL::dth,dtl,dqw,dzk,els
     REAL, DIMENSION(kts:kte), INTENT(IN) :: Sh,el
 
@@ -2735,7 +2721,7 @@ CONTAINS
            if(cldfra_bl1D(k)>0.01 .and. qc_bl1D(k)<1.E-6)qc_bl1D(k)=1.E-6
            if(cldfra_bl1D(k)>0.01 .and. qi_bl1D(k)<1.E-8)qi_bl1D(k)=1.E-8
 
-           !Now estimate the buiyancy flux functions
+           !Now estimate the buoyancy flux functions
            q2p = xlvcp/exner(k)
            pt = thl(k) +q2p*ql(k) ! potential temp
 

@@ -18,8 +18,10 @@ fi
 
 export FORECASTSH="$HOMEgfs/scripts/exglobal_forecast.sh"
 export FCSTEXECDIR="$HOMEgfs/exec"
-export FCSTEXEC="global_fv3gfs.x"
+export FCSTEXEC="global_fv3gfs_mynn.x"
+#JKHexport FCSTEXEC="global_fv3gfs_mynn.x_nodebug"
 export npe_fv3=$npe_fcst 
+#JKH export domains_stack_size=5000000            ### JKH
 
 if [[ "$CDUMP" == "gfs" ]] ; then
    export npe_fv3=$npe_fcst_gfs
@@ -75,7 +77,7 @@ fi
 
 # PBL/turbulence schemes
 export hybedmf=".false."
-if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" || "$CCPP_SUITE" == "FV3_GFSv16_mynn" ]] ; then
+if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" || "$CCPP_SUITE" == "FV3_GFS_v16_mynn" ]] ; then
     export satmedmf=".false."
     export isatmedmf=0
     export shal_cnv=".true."       
@@ -115,6 +117,7 @@ fi
 
 # Radiation options 
 export IAER=1011    ;#spectral band mapping method for aerosol optical properties
+##export IAER=5111    ;#spectral band mapping method for aerosol optical properties
 export iovr_lw=3    ;#de-correlation length cloud overlap method (Barker, 2008) 
 export iovr_sw=3    ;#de-correlation length cloud overlap method (Barker, 2008) 
 export iovr=3       ;#de-correlation length cloud overlap method (Barker, 2008) 
@@ -124,7 +127,7 @@ export icliq_sw=2   ;#cloud optical coeffs from AER's newer version v3.9-v4.0 fo
 export output_1st_tstep_rst=".false."                                        #JKH
 
 # Convection Options: 2-SASAS, 3-GF
-if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" || "$CCPP_SUITE" == "FV3_GFSv16_gf" ]] ; then
+if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" || "$CCPP_SUITE" == "FV3_GFS_v16_gf" ]] ; then
 	export imfdeepcnv=3
 	export imfshalcnv=3
 else
@@ -174,7 +177,11 @@ elif [ $imp_physics -eq 8 ]; then # Thompson
 
 elif [ $imp_physics -eq 11 ]; then # GFDL
     export ncld=5
-    export FIELD_TABLE="$HOMEgfs/parm/parm_fv3diag/field_table_gfdl${tbf}"
+    if [[ "$CCPP_SUITE" == "FV3_GFS_v16_mynn" ]] ; then
+      export FIELD_TABLE="$HOMEgfs/parm/parm_fv3diag/field_table_gfdl_satmedmf"
+    else
+      export FIELD_TABLE="$HOMEgfs/parm/parm_fv3diag/field_table_gfdl${tbf}"
+    fi
     export nwat=6
     export dnats=1
     export cal_pre=".false."

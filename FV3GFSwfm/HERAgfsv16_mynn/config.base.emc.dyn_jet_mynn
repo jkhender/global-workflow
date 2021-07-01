@@ -146,9 +146,9 @@ export CASE_ENKF="@CASEENS@"
 export RUN_CCPP="YES"
 #### export CCPP_SUITE="FV3_GFS_v16"       # GFS v16
 #### export CCPP_SUITE="FV3_GSD_v0"        # GSDsuite 
-export CCPP_SUITE="FV3_GSD_noah"      # GSDsuite + NOAH LSM  
+#### export CCPP_SUITE="FV3_GSD_noah"      # GSDsuite + NOAH LSM  
 #### export CCPP_SUITE="FV3_GFS_v16_gf"         # GFS v16 + GF
-#### export CCPP_SUITE="FV3_GFS_v16_mynn"       # GFS v16 + MYNN
+export CCPP_SUITE="FV3_GFS_v16_mynn"       # GFS v16 + MYNN
 #### export CCPP_SUITE="FV3_GFS_v16_thompson"       # GFS v16 + THMP
 
 # Surface cycle update frequency
@@ -199,7 +199,7 @@ export restart_interval_gfs=0
 export QUILTING=".true."
 export OUTPUT_GRID="gaussian_grid"
 export OUTPUT_FILE="netcdf"
-export WRITE_DOPOST=".true."     # JKH
+export WRITE_DOPOST=".false."     # JKH
 
 # suffix options depending on file format
 if [ $OUTPUT_FILE = "netcdf" ]; then
@@ -240,7 +240,7 @@ if [[ "$SDATE" -lt "2019020100" ]]; then DO_WAVE="NO" ; fi # no rtofs in GDA
 export WAVE_CDUMP="both"
 
 # Microphysics Options: 99-ZhaoCarr, 8-Thompson; 6-WSM6, 10-MG, 11-GFDL
-if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah"  || "$CCPP_SUITE" == "FV3_GFS_v16_thompson" ]] ; then
+if [[ "$CCPP_SUITE" == "FV3_GSD_v0" || "$CCPP_SUITE" == "FV3_GSD_noah" ]] ; then
        export imp_physics=8
 else
        export imp_physics=11

@@ -144,9 +144,9 @@ export CASE_ENKF="@CASEENS@"
 
 # Run with CCPP physics
 export RUN_CCPP="YES"
-#### export CCPP_SUITE="FV3_GFS_v16"       # GFS v16
+export CCPP_SUITE="FV3_GFS_v16"       # GFS v16
 #### export CCPP_SUITE="FV3_GSD_v0"        # GSDsuite 
-export CCPP_SUITE="FV3_GSD_noah"      # GSDsuite + NOAH LSM  
+#### export CCPP_SUITE="FV3_GSD_noah"      # GSDsuite + NOAH LSM  
 #### export CCPP_SUITE="FV3_GFS_v16_gf"         # GFS v16 + GF
 #### export CCPP_SUITE="FV3_GFS_v16_mynn"       # GFS v16 + MYNN
 #### export CCPP_SUITE="FV3_GFS_v16_thompson"       # GFS v16 + THMP

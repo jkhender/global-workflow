@@ -21,11 +21,9 @@
         <!ENTITY ATCFNAME "my16">
 
 	<!-- Experiment parameters such as starting, ending dates -->
-	<!ENTITY SDATE    "201909241200">
-	<!ENTITY EDATE    "201909241200">
-	<!ENTITY SDATE    "202106240000">
-	<!ENTITY EDATE    "202106240000">
-	<!ENTITY INTERVAL "24:00:00">
+	<!ENTITY SDATE    "201909141200">
+	<!ENTITY EDATE    "201909141800">
+	<!ENTITY INTERVAL "00:06:00:00">
 
 	<!-- Run Envrionment -->
 	<!ENTITY RUN_ENVIR "emc">
@@ -56,7 +54,7 @@
 	<!-- ROCOTO parameters that control workflow -->
 	<!ENTITY CYCLETHROTTLE "2">
 	<!ENTITY TASKTHROTTLE  "25">
-	<!ENTITY MAXTRIES      "2">
+	<!ENTITY MAXTRIES      "1">
 
 	<!-- BEGIN: Resource requirements for the workflow -->
 
@@ -77,10 +75,10 @@
 	<!ENTITY RESOURCES_INIT_GFS "<nodes>4:ppn=6:tpp=1</nodes>">
 	<!ENTITY NATIVE_INIT_GFS    "--export=NONE">
 
-	<!ENTITY QUEUE_FCST_GFS     "&QUEUE_URG;">
 	<!ENTITY QUEUE_FCST_GFS     "&QUEUE;">
+	<!ENTITY QUEUE_FCST_GFS     "&QUEUE_URG;">
 	<!ENTITY QUEUE_FCST_GFS     "&QUEUE_DEBUG;">
-	<!ENTITY WALLTIME_FCST_GFS  "02:40:00">
+	<!ENTITY WALLTIME_FCST_GFS  "06:00:00">
 	<!ENTITY WALLTIME_FCST_GFS  "00:30:00">
 	<!ENTITY RESOURCES_FCST_GFS "<nodes>103:ppn=10:tpp=4</nodes>">       <!-- 12x12 -->
 	<!ENTITY RESOURCES_FCST_GFS "<nodes>55:ppn=10:tpp=4</nodes>">        <!-- 8x8 -->

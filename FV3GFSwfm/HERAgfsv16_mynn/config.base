@@ -79,7 +79,7 @@ export NCP="/bin/cp -p"
 export NMV="/bin/mv"
 export NLN="/bin/ln -sf"
 export VERBOSE="YES"
-export KEEPDATA="NO"
+export KEEPDATA="YES"     ## JKH
 export CHGRP_RSTPROD="YES"
 export CHGRP_CMD="chgrp rstprod"
 export NEMSIOGET="$HOMEgfs/exec/nemsio_get"
@@ -96,7 +96,7 @@ export FDATE=2021051706
 export EDATE=2021051700
 export EXP_WARM_START=".false."
 export assim_freq=6
-export PSLOT="gfsv16_mynn"
+export PSLOT="HERAgfsv16_mynn"
 export EXPDIR="/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/FV3GFSwfm/$PSLOT"
 export ROTDIR="/scratch1/BMC/gsd-fv3-dev/Judy.K.Henderson/test/gslv16_hfip/FV3GFSrun/$PSLOT"
 export ROTDIR_DUMP="YES"                #Note: A value of "NO" does not currently work
@@ -175,10 +175,10 @@ export gfs_cyc=1 # 0: no GFS cycle, 1: 00Z only, 2: 00Z and 12Z only, 4: all 4 c
 # GFS output and frequency
 export FHMIN_GFS=0
 
-export FHMAX_GFS_00=24
-export FHMAX_GFS_06=24
-export FHMAX_GFS_12=24
-export FHMAX_GFS_18=24
+export FHMAX_GFS_00=168
+export FHMAX_GFS_06=168
+export FHMAX_GFS_12=168
+export FHMAX_GFS_18=168
 export FHMAX_GFS=$(eval echo \${FHMAX_GFS_$cyc})
 
 export FHOUT_GFS=6
@@ -197,7 +197,7 @@ export restart_interval_gfs=0
 export QUILTING=".true."
 export OUTPUT_GRID="gaussian_grid"
 export OUTPUT_FILE="netcdf"
-export WRITE_DOPOST=".true."     # JKH
+export WRITE_DOPOST=".true."     
 
 # suffix options depending on file format
 if [ $OUTPUT_FILE = "netcdf" ]; then
