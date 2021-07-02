@@ -36,14 +36,13 @@ if [[ ! -d fv3gfs.fd ]] ; then
         cd fv3gfs.fd
         git checkout GFS.v16.0.14
     else
-        git clone --recursive -b gsl/develop https://github.com/NOAA-GSL/ufs-weather-model ufs-weather-model_07jun_b60e5fe >> ${topdir}/checkout-fv3gfs.log
-g 2>&1
-        cd ufs-weather-model_07jun_b60e5fe
-        git checkout b60e5feefa55613868cac45da5ca42562617739d 
+        git clone https://github.com/ufs-community/ufs-weather-model emc_dev_14jun_14c69ba >> ${topdir}/checkout-fv3gfs.log 2>&1
+        cd emc_dev_14jun_14c69ba
+        git checkout 14c69ba5aea7d48310981fb62041b5d6fd0a277a
     fi
     git submodule update --init --recursive
     cd ${topdir}
-    ln -fs ufs-weather-model_07jun_b60e5fe fv3gfs.fd 
+    ln -fs emc_dev_14jun_14c69ba fv3gfs.fd 
     rsync -ax fv3gfs.fd_gsl/ fv3gfs.fd/        ## copy over changes not in FV3 repository
 else
     echo 'Skip.  Directory fv3gfs.fd already exists.'
