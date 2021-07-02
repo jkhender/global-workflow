@@ -18,12 +18,15 @@
   <group name="radiation">
     <subcycle loop="1">
       <scheme>GFS_suite_interstitial_rad_reset</scheme>
+      <scheme>sgscloud_radpre</scheme>
       <scheme>GFS_rrtmg_pre</scheme>
+      <scheme>GFS_radiation_surface</scheme>
       <scheme>rrtmg_sw_pre</scheme>
       <scheme>rrtmg_sw</scheme>
       <scheme>rrtmg_sw_post</scheme>
       <scheme>rrtmg_lw_pre</scheme>
       <scheme>rrtmg_lw</scheme>
+      <scheme>sgscloud_radpost</scheme>
       <scheme>rrtmg_lw_post</scheme>
       <scheme>GFS_rrtmg_post</scheme>
     </subcycle>
@@ -75,7 +78,6 @@
       <scheme>cu_gf_driver</scheme>
       <scheme>GFS_DCNV_generic_post</scheme>
       <scheme>GFS_SCNV_generic_pre</scheme>
-      <scheme>samfshalcnv</scheme>
       <scheme>GFS_SCNV_generic_post</scheme>
       <scheme>GFS_suite_interstitial_4</scheme>
       <scheme>cnvc90</scheme>
