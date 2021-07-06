@@ -26,16 +26,17 @@ done
 topdir=$(pwd)
 echo $topdir
 
-echo fv3gfs_gf.fd checkout ...
-if [[ ! -d fv3gfs_gf.fd ]] ; then
+echo fv3gfs_gfnew.fd checkout ...
+if [[ ! -d fv3gfs_gfnew.fd ]] ; then
     rm -f ${topdir}/checkout-gfnew.log
-    git clone -b 14c69ba https://github.com/ufs-community/ufs-weather-model fv3gfs_gf.fd >> ${topdir}/checkout-fv3gfs_gf.log 2>&1
-    cd fv3gfs_gf.fd
+    git clone https://github.com/ufs-community/ufs-weather-model fv3gfs_gfnew.fd >> ${topdir}/checkout-fv3gfs_gfnew.log 2>&1
+    cd fv3gfs_gfnew.fd
+    git checkout 14c69ba5aea7d48310981fb62041b5d6fd0a277a
     git submodule update --init --recursive
     cd ${topdir}
-    rsync -avx fv3gfs_gf.fd_gsl/ fv3gfs_gf.fd/        ## copy over changes not in FV3 repository
+    rsync -avx fv3gfs_gfnew.fd_gsl/ fv3gfs_gfnew.fd/        ## copy over changes not in FV3 repository
 else
-    echo 'Skip.  Directory fv3gfs_gf.fd already exists.'
+    echo 'Skip.  Directory fv3gfs_gfnew.fd already exists.'
 fi
 
 exit 0

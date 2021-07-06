@@ -26,11 +26,12 @@ done
 topdir=$(pwd)
 echo $topdir
 
-echo fv3gfs_gf.fd checkout ...
+echo fv3gfs_gfaer.fd checkout ...
 if [[ ! -d fv3gfs_gfaer.fd ]] ; then
     rm -f ${topdir}/checkout-gfaer.log
-    git clone -b 14c69ba https://github.com/ufs-community/ufs-weather-model fv3gfs_gf.fd >> ${topdir}/checkout-fv3gfs_gf.log 2>&1
+    git clone https://github.com/ufs-community/ufs-weather-model fv3gfs_gfaer.fd >> ${topdir}/checkout-fv3gfs_gfaer.log 2>&1
     cd fv3gfs_gfaer.fd
+    git checkout 14c69ba5aea7d48310981fb62041b5d6fd0a277a
     git submodule update --init --recursive
     cd ${topdir}
     rsync -avx fv3gfs_gfaer.fd_gsl/ fv3gfs_gfaer.fd/        ## copy over changes not in FV3 repository
