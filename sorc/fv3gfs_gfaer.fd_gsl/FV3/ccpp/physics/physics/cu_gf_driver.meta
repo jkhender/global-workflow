@@ -7,6 +7,38 @@
 [ccpp-arg-table]
   name = cu_gf_driver_init
   type = scheme
+[imfshalcnv]
+  standard_name = flag_for_mass_flux_shallow_convection_scheme
+  long_name = flag for mass-flux shallow convection scheme
+  units = flag
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
+[imfshalcnv_gf]
+  standard_name = flag_for_gf_shallow_convection_scheme
+  long_name = flag for Grell-Freitas shallow convection scheme
+  units = flag
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
+[imfdeepcnv]
+  standard_name = flag_for_mass_flux_deep_convection_scheme
+  long_name = flag for mass-flux deep convection scheme
+  units = flag
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
+[imfdeepcnv_gf]
+  standard_name = flag_for_gf_deep_convection_scheme
+  long_name = flag for Grell-Freitas deep convection scheme
+  units = flag
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
 [mpirank]
   standard_name = mpi_rank
   long_name = current MPI-rank
@@ -287,23 +319,14 @@
   kind = kind_phys
   intent = in
   optional = F
-[aod_gf] 
-  standard_name = aod_in_gf_deep
+[aod_gf]
+  standard_name = aod_gf_deep
   long_name = aerosol optical depth used in Grell-Freitas Convective Parameterization
   units = none
   dimensions = (horizontal_loop_extent)
   type = real
-  kind = kind_phys 
-  intent = inout
-  optional = F
-[aod_in]
-  standard_name = merra2_aod_input
-  long_name = Total atmospheric extinction 550 nm AOD for GF
-  units = various
-  dimensions = (horizontal_loop_extent)
-  type = real
   kind = kind_phys
-  intent = in
+  intent = inout
   optional = F
 [cliw]
   standard_name = ice_water_mixing_ratio_convective_transport_tracer
@@ -401,46 +424,78 @@
   type = logical
   intent = in
   optional = F
-[du3dt_CNV]
-  standard_name = cumulative_change_in_x_wind_due_to_convection
-  long_name = cumulative change in x wind due to convection
+[du3dt_SCNV]
+  standard_name = cumulative_change_in_x_wind_due_to_shallow_convection
+  long_name = cumulative change in x wind due to shallow convection
   units = m s-1
-  dimensions = (horizontal_dimension,vertical_dimension)
+  dimensions = (horizontal_loop_extent,vertical_dimension)
   type = real
   kind = kind_phys
   intent = inout
-[dv3dt_CNV]
-  standard_name = cumulative_change_in_y_wind_due_to_convection
-  long_name = cumulative change in y wind due to convection
+  optional = F
+[dv3dt_SCNV]
+  standard_name = cumulative_change_in_y_wind_due_to_shallow_convection
+  long_name = cumulative change in y wind due to shallow convection
   units = m s-1
-  dimensions = (horizontal_dimension,vertical_dimension)
+  dimensions = (horizontal_loop_extent,vertical_dimension)
   type = real
   kind = kind_phys
   intent = inout
-[dt3dt_CNV]
-  standard_name = cumulative_change_in_temperature_due_to_convection
-  long_name = cumulative change in temperature due to convection
+  optional = F
+[dt3dt_SCNV]
+  standard_name = cumulative_change_in_temperature_due_to_shallow_convection
+  long_name = cumulative change in temperature due to shallow convection
   units = K
-  dimensions = (horizontal_dimension,vertical_dimension)
+  dimensions = (horizontal_loop_extent,vertical_dimension)
   type = real
   kind = kind_phys
   intent = inout
-[dq3dt_CNV]
-  standard_name = cumulative_change_in_water_vapor_specific_humidity_due_to_convection
-  long_name = cumulative change in water vapor specific humidity due to convection
+  optional = F
+[dq3dt_SCNV]
+  standard_name = cumulative_change_in_water_vapor_specific_humidity_due_to_shallow_convection
+  long_name = cumulative change in water vapor specific humidity due to shallow convection
   units = kg kg-1
-  dimensions = (horizontal_dimension,vertical_dimension)
+  dimensions = (horizontal_loop_extent,vertical_dimension)
   type = real
   kind = kind_phys
   intent = inout
-[dcli3dt_CNV]
-  standard_name = cumulative_change_in_cloud_water_ice_mixing_ratio_due_to_convection
-  long_name = cumulative change in cloud water and cloud ice mixing ratio due to convection
+  optional = F
+[du3dt_DCNV]
+  standard_name = cumulative_change_in_x_wind_due_to_deep_convection
+  long_name = cumulative change in x wind due to deep convection
+  units = m s-1
+  dimensions = (horizontal_loop_extent,vertical_dimension)
+  type = real
+  kind = kind_phys
+  intent = inout
+  optional = F
+[dv3dt_DCNV]
+  standard_name = cumulative_change_in_y_wind_due_to_deep_convection
+  long_name = cumulative change in y wind due to deep convection
+  units = m s-1
+  dimensions = (horizontal_loop_extent,vertical_dimension)
+  type = real
+  kind = kind_phys
+  intent = inout
+  optional = F
+[dt3dt_DCNV]
+  standard_name = cumulative_change_in_temperature_due_to_deep_convection
+  long_name = cumulative change in temperature due to deep convection
+  units = K
+  dimensions = (horizontal_loop_extent,vertical_dimension)
+  type = real
+  kind = kind_phys
+  intent = inout
+  optional = F
+[dq3dt_DCNV]
+  standard_name = cumulative_change_in_water_vapor_specific_humidity_due_to_deep_convection
+  long_name = cumulative change in water vapor specific humidity due to deep convection
   units = kg kg-1
-  dimensions = (horizontal_dimension,vertical_dimension)
+  dimensions = (horizontal_loop_extent,vertical_dimension)
   type = real
   kind = kind_phys
   intent = inout
+  optional = F
 [ldiag3d]
   standard_name = flag_diagnostics_3D
   long_name = flag for 3d diagnostic fields

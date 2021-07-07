@@ -23,10 +23,13 @@ contains
 !! \section arg_table_cu_gf_driver_init Argument Table
 !! \htmlinclude cu_gf_driver_init.html
 !!
-      subroutine cu_gf_driver_init(mpirank, mpiroot, errmsg, errflg)
+      subroutine cu_gf_driver_init(imfshalcnv, imfshalcnv_gf, imfdeepcnv, &
+                          imfdeepcnv_gf,mpirank, mpiroot, errmsg, errflg)
 
          implicit none
-
+         
+         integer,                   intent(in) :: imfshalcnv, imfshalcnv_gf
+         integer,                   intent(in) :: imfdeepcnv, imfdeepcnv_gf       
          integer,                   intent(in)    :: mpirank
          integer,                   intent(in)    :: mpiroot
          character(len=*),          intent(  out) :: errmsg
@@ -43,6 +46,15 @@ contains
             write(0,*) ' -----------------------------------------------------------------------------------------------------------------------------'
          end if
          ! *DH temporary
+
+         ! Consistency checks
+         if (.not. (imfshalcnv == imfshalcnv_gf .or.                       &
+        &        imfdeepcnv == imfdeepcnv_gf)) then
+           write(errmsg,'(*(a))') 'Logic error: namelist choice of',       &
+        &    ' convection is different from Grell-Freitas scheme'
+           errflg = 1
+           return
+         end if
 
       end subroutine cu_gf_driver_init
 
@@ -63,13 +75,14 @@ contains
 !!
 !>\section gen_gf_driver GSD GF Cumulus Scheme General Algorithm
 !> @{
-      subroutine cu_gf_driver_run(ntracer,garea,im,km,dt,flag_init,cactiv,      &
-               cactiv_m,forcet,forceqv_spechum,phil,raincv,qv_spechum,t,cld1d,  &
+      subroutine cu_gf_driver_run(ntracer,garea,im,km,dt,flag_init,cactiv,cactiv_m,                &
+               forcet,forceqv_spechum,phil,raincv,qv_spechum,t,cld1d,           &
                us,vs,t2di,w,qv2di_spechum,p2di,psuri,                           &
-               hbot,htop,kcnv,xland,hfx2,qfx2,aod_in,aod_gf,                    &
-               cliw,clcw,pbl,ud_mf,dd_mf,dt_mf,cnvw_moist,cnvc,imfshalcnv,      &
+               hbot,htop,kcnv,xland,hfx2,qfx2,aod_gf,cliw,clcw,                        &
+               pbl,ud_mf,dd_mf,dt_mf,cnvw_moist,cnvc,imfshalcnv,                &
                flag_for_scnv_generic_tend,flag_for_dcnv_generic_tend,           &
-               du3dt_CNV,dv3dt_CNV,dt3dt_CNV,dq3dt_CNV,dcli3dt_CNV,             &
+               du3dt_SCNV,dv3dt_SCNV,dt3dt_SCNV,dq3dt_SCNV,                     &
+               du3dt_DCNV,dv3dt_DCNV,dt3dt_DCNV,dq3dt_DCNV,                     &
                ldiag3d,qdiag3d,qci_conv,errmsg,errflg)
 !-------------------------------------------------------------
       implicit none
@@ -84,8 +97,9 @@ contains
      !integer, parameter :: ichoicem=5	! 0 2 5 13
       integer, parameter :: ichoicem=13	! 0 2 5 13
       integer, parameter :: ichoice_s=3	! 0 1 2 3
-      real(kind=kind_phys), parameter :: aodc0=0.14 !0.05 
-      real(kind=kind_phys), parameter :: aodreturn=30.
+
+      real(kind=kind_phys), parameter :: aodc0=0.14
+      real(kind=kind_phys), parameter :: aodreturn=30.   
       real(kind=kind_phys) :: dts,fpi,fp
       integer, parameter :: dicycle=0 ! diurnal cycle flag
       integer, parameter :: dicycle_m=0 !- diurnal cycle flag
@@ -96,48 +110,49 @@ contains
    logical, intent(in   ) :: flag_for_scnv_generic_tend,flag_for_dcnv_generic_tend,flag_init
    logical, intent(in   ) :: ldiag3d,qdiag3d
 
-   real(kind=kind_phys),  dimension( im , km ), intent(in )    :: forcet,forceqv_spechum,w,phil
-   real(kind=kind_phys),  dimension( im , km ), intent(inout ) :: t,us,vs
-   real(kind=kind_phys),  dimension( im , km ), intent(inout ) :: qci_conv
-   real(kind=kind_phys),  dimension( im )   :: rand_mom,rand_vmas
-   real(kind=kind_phys),  dimension( im,4 ) :: rand_clos
-   real(kind=kind_phys),  dimension( im , km, 11 ) :: gdc,gdc2
-   real(kind=kind_phys),  dimension( im , km ),     intent(out ) :: cnvw_moist,cnvc
-   real(kind=kind_phys),  dimension( im , km ), intent(inout ) :: cliw, clcw
+   real(kind=kind_phys),  dimension( : , : ), intent(in    ) :: forcet,forceqv_spechum,w,phil
+   real(kind=kind_phys),  dimension( : , : ), intent(inout ) :: t,us,vs
+   real(kind=kind_phys),  dimension( : , : ), intent(inout ) :: qci_conv
+   real(kind=kind_phys),  dimension( : , : ), intent(out   ) :: cnvw_moist,cnvc
+   real(kind=kind_phys),  dimension( : , : ), intent(inout ) :: cliw, clcw
 
-   real(kind=kind_phys),  dimension(  : ,  : ), intent(inout ) :: &
-               du3dt_CNV,dv3dt_CNV,dt3dt_CNV,dq3dt_CNV,dcli3dt_CNV
+   real(kind=kind_phys),  dimension( : , : ), intent(inout ) :: &
+               du3dt_SCNV,dv3dt_SCNV,dt3dt_SCNV,dq3dt_SCNV, &
+               du3dt_DCNV,dv3dt_DCNV,dt3dt_DCNV,dq3dt_DCNV
 
-   integer, dimension (im), intent(inout) :: hbot,htop,kcnv
-   integer,    dimension (im), intent(in) :: xland
-   real(kind=kind_phys),    dimension (im), intent(in) :: pbl
+   integer, dimension (:), intent(out) :: hbot,htop,kcnv
+   integer, dimension (:), intent(in)  :: xland
+   real(kind=kind_phys),    dimension (:), intent(in) :: pbl
    integer, dimension (im) :: tropics
 !  ruc variable
-   real(kind=kind_phys), dimension (im)  :: hfx2,qfx2,psuri
-   real(kind=kind_phys), dimension (im,km) :: ud_mf,dd_mf,dt_mf
-   real(kind=kind_phys), dimension (im), intent(inout) :: raincv,cld1d
-   real(kind=kind_phys), dimension (im,km) :: t2di,p2di
+   real(kind=kind_phys), dimension (:),   intent(in)  :: hfx2,qfx2,psuri
+   real(kind=kind_phys), dimension (:,:), intent(out) :: ud_mf,dd_mf,dt_mf
+   real(kind=kind_phys), dimension (:),   intent(out) :: raincv,cld1d
+   real(kind=kind_phys), dimension (:,:), intent(in)  :: t2di,p2di
    ! Specific humidity from FV3
-   real(kind=kind_phys), dimension (im,km), intent(in) :: qv2di_spechum
-   real(kind=kind_phys), dimension (im,km), intent(inout) :: qv_spechum
+   real(kind=kind_phys), dimension (:,:), intent(in) :: qv2di_spechum
+   real(kind=kind_phys), dimension (:,:), intent(inout) :: qv_spechum
+   real(kind=kind_phys), dimension (:), intent(inout) :: aod_gf
    ! Local water vapor mixing ratios and cloud water mixing ratios
    real(kind=kind_phys), dimension (im,km) :: qv2di, qv, forceqv, cnvw
-   real(kind=kind_phys), dimension(im), intent(inout) :: aod_gf
-   real(kind=kind_phys), dimension(im), intent(in) :: aod_in
    !
-   real(kind=kind_phys), dimension( im ),intent(in) :: garea
+   real(kind=kind_phys), dimension(:),intent(in) :: garea
    real(kind=kind_phys), intent(in   ) :: dt 
 
    integer, intent(in   ) :: imfshalcnv
+   integer, dimension(:), intent(inout) :: cactiv,cactiv_m
+
    character(len=*), intent(out) :: errmsg
    integer,          intent(out) :: errflg
-!  define locally for now.
-   integer, dimension(im),intent(inout) :: cactiv,cactiv_m
+
+!  local variables
    integer, dimension(im) :: k22_shallow,kbcon_shallow,ktop_shallow
-   real(kind=kind_phys),    dimension(im) :: ht
-   real(kind=kind_phys), dimension(im) :: ccn_gf,ccn_m
-   real(kind=kind_phys) :: ccnclean
-   real(kind=kind_phys),    dimension(im) :: dx
+   real(kind=kind_phys), dimension (im)    :: rand_mom,rand_vmas
+   real(kind=kind_phys), dimension (im,4)  :: rand_clos
+   real(kind=kind_phys), dimension (im,km,11) :: gdc,gdc2
+   real(kind=kind_phys), dimension (im)    :: ht
+   real(kind=kind_phys), dimension (im)    :: ccn_gf,ccn_m
+   real(kind=kind_phys), dimension (im)    :: dx
    real(kind=kind_phys), dimension (im,km) :: outt,outq,outqc,phh,subm,cupclw,cupclws
    real(kind=kind_phys), dimension (im,km) :: dhdt,zu,zus,zd,phf,zum,zdm,outum,outvm
    real(kind=kind_phys), dimension (im,km) :: outts,outqs,outqcs,outu,outv,outus,outvs
@@ -209,7 +224,6 @@ contains
 ! these should be coming in from outside
 !
 !    cactiv(:)      = 0
-!    cactiv_m(:)    = 0
      rand_mom(:)    = 0.
      rand_vmas(:)   = 0.
      rand_clos(:,:) = 0.
@@ -228,7 +242,7 @@ contains
 !
 !> - Set tuning constants for radiation coupling
 !
-     tun_rad_shall(:)= .02
+     tun_rad_shall(:)=.02
      tun_rad_mid(:)=.15
      tun_rad_deep(:)=.13
      edt(:)=0.
@@ -300,22 +314,17 @@ contains
       ! set aod and ccn
       if (flag_init) then
         aod_gf(i)=aodc0
-        !aod_gf(i) = aod_in(i)
       else
         if((cactiv(i).eq.0) .and. (cactiv_m(i).eq.0))then
-          !if(aod_in(i)>aod_gf(i)) aod_gf(i)=aod_gf(i)+((aod_in(i)-aod_gf(i))*(dt/(aodreturn*60)))
-          !if(aod_gf(i)>aod_in(i)) aod_gf(i)=aod_in(i)
           if(aodc0>aod_gf(i)) aod_gf(i)=aod_gf(i)+((aodc0-aod_gf(i))*(dt/(aodreturn*60)))
           if(aod_gf(i)>aodc0) aod_gf(i)=aodc0
         endif
       endif
 
       ccn_gf(i)=max(5., (aod_gf(i)/0.0027)**(1/0.640))
-      !ccn_gf(i)=max( 5., ( 370.37*aod_gf(i) )**1.555 )
       ccn_m(i)=ccn_gf(i)
 
       ccnclean=max(5., (aodc0/0.0027)**(1/0.640))
-      !ccnclean=max( 5., ( 370.37*aodc0 )**1.555 )
 
       hbot(i)  =kte
       htop(i)  =kts
@@ -324,11 +333,9 @@ contains
 !     if(abs(xlandi(i)-1.).le.1.e-3) tun_rad_shall(i)=.15     
 !     if(abs(xlandi(i)-1.).le.1.e-3) flux_tun(i)=1.5     
      enddo
-
      do i= its,itf
       mconv(i)=0.
      enddo
-
      do k=kts,kte
       do i= its,itf
        omeg(i,k)=0.
@@ -746,9 +753,9 @@ contains
             massflx(:)=0.
             trcflx_in1(:)=0.
             clw_in1(:)=0.
-            do k=kts,ktf
+            do k=kts,ktf 
               clw_ten(i, k)=0.
-            enddo
+            enddo   
             po_cup(:)=0.
             kstop=kts
             if(ktopm(i).gt.kts .or. ktop(i).gt.kts)kstop=max(ktopm(i),ktop(i))
@@ -777,7 +784,7 @@ contains
 
                gdc(i,k,1)= max(0.,tun_rad_shall(i)*cupclws(i,k)*cutens(i))      ! my mod
                gdc2(i,k,1)=max(0.,tun_rad_deep(i)*(cupclwm(i,k)*cutenm(i)+cupclw(i,k)*cuten(i)))
-               qci_conv(i,k)=gdc2(i,k,1) 
+               qci_conv(i,k)=gdc2(i,k,1)
                gdc(i,k,2)=(outt(i,k))*86400.
                gdc(i,k,3)=(outtm(i,k))*86400. 
                gdc(i,k,4)=(outts(i,k))*86400.
@@ -847,14 +854,14 @@ contains
                          )
                !tem1 = max(0.0, min(1.0, (tcr-t(i,k))*tcrf))
                !if (clcw(i,k) .gt. -999.0) then
-               ! cliw(i,k) = max(0.,cliw(i,k) + tem * tem1)            !ice
+               ! cliw(i,k) = max(0.,cliw(i,k) + tem * tem1)            ! ice
                ! clcw(i,k) = max(0.,clcw(i,k) + tem *(1.0-tem1))       ! water
                !else
                ! cliw(i,k) = max(0.,cliw(i,k) + tem)
                !endif
-               if(t(i,k).le.270.) cliw(i,k) = max(0.,cliw(i,k) + tem) ! HCB
-               if(t(i,k).gt.270) clcw(i,k) = max(0.,clcw(i,k) + tem)
-               !clcw(i,k) = max(0.,clcw(i,k) + tem)
+               if(t(i,k).le.270.) cliw(i,k) = max(0.,cliw(i,k) + tem) ! HCB 
+               if(t(i,k).gt.270) clcw(i,k) = max(0.,clcw(i,k) + tem) 
+
              enddo
 
             gdc(i,1,10)=forcing(i,1)
@@ -877,7 +884,6 @@ contains
             do i=its,itf
               if(pret(i).gt.0.)then
                  cactiv(i)=1
-                 !cactiv(i)=0
                  raincv(i)=.001*(cutenm(i)*pretm(i)+cutens(i)*prets(i)+cuten(i)*pret(i))*dt
               else
                  cactiv(i)=0
@@ -885,7 +891,6 @@ contains
               endif   ! pret > 0
 
               if(pretm(i).gt.0)then
-                 !cactiv_m(i)=0
                  cactiv_m(i)=1
               else
                  cactiv_m(i)=0
@@ -900,16 +905,11 @@ contains
 
               ! Convert ccn back to aod
               aod_gf(i)=0.0027*(ccn_gf(i)**0.64)
-              !aod_gf(i)=(ccn_gf(i)**(1/1.555))/370.37
               if(aod_gf(i)<0.007)then
                 aod_gf(i)=0.007
-                !ccn_gf(i)=( 370.37*aod_gf(i) )**1.555 
                 ccn_gf(i)=(aod_gf(i)/0.0027)**(1/0.640)
-              !elseif(aod_gf(i)>aod_in(i))then
-              !  aod_gf(i)=aod_in(i)
               elseif(aod_gf(i)>aodc0)then
                 aod_gf(i)=aodc0
-                !ccn_gf(i)=( 370.37*aod_gf(i) )**1.555 
                 ccn_gf(i)=(aod_gf(i)/0.0027)**(1/0.640)
               endif
             enddo
@@ -923,34 +923,35 @@ contains
 ! Diagnostic tendency updates
 !
         if(ldiag3d) then
-          if(.not.flag_for_scnv_generic_tend .and. .not.flag_for_dcnv_generic_tend) then
+          if(ishallow_g3.eq.1 .and. .not.flag_for_scnv_generic_tend) then
             do k=kts,ktf
               do i=its,itf
-                !du3dt_CNV(i,k) = du3dt_CNV(i,k) + (cutens(i)*outus(i,k) + cuten(i)*outu(i,k) + cutenm(i)*outum(i,k)) * dt
-                !dv3dt_CNV(i,k) = dv3dt_CNV(i,k) + (cutens(i)*outvs(i,k) + cuten(i)*outv(i,k) + cutenm(i)*outvm(i,k)) * dt
-                !dt3dt_CNV(i,k) = dt3dt_CNV(i,k) + (cutens(i)*outts(i,k) + cuten(i)*outt(i,k) + cutenm(i)*outtm(i,k)) * dt
-                du3dt_CNV(i,k) = 0.
-                dV3dt_CNV(i,k) = 0.
-                dt3dt_CNV(i,k) = 0.
-                du3dt_CNV(i,k) = (cutens(i)*outus(i,k) + cuten(i)*outu(i,k) + cutenm(i)*outum(i,k)) * dt
-                dv3dt_CNV(i,k) = (cutens(i)*outvs(i,k) + cuten(i)*outv(i,k) + cutenm(i)*outvm(i,k)) * dt
-                dt3dt_CNV(i,k) = (cutens(i)*outts(i,k) + cuten(i)*outt(i,k) + cutenm(i)*outtm(i,k)) * dt
+                du3dt_SCNV(i,k) = du3dt_SCNV(i,k) + cutens(i)*outus(i,k) * dt
+                dv3dt_SCNV(i,k) = dv3dt_SCNV(i,k) + cutens(i)*outvs(i,k) * dt
+                dt3dt_SCNV(i,k) = dt3dt_SCNV(i,k) + cutens(i)*outts(i,k) * dt
                 if(qdiag3d) then
-                  dq3dt_CNV(i,k) = 0.
-                  tem = (cutens(i)*outqs(i,k) + cuten(i)*outq(i,k) + cutenm(i)*outqm(i,k)) * dt
+                  tem = cutens(i)*outqs(i,k)* dt
                   tem = tem/(1.0_kind_phys+tem)
-                  !dq3dt_CNV(i,k) = dq3dt_CNV(i,k) + tem
-                  dq3dt_CNV(i,k) = tem
-
-                  dcli3dt_CNV(i,k) = 0.
-                  dcli3dt_CNV(i,k) = (cutens(i)*outqcs(i,k) + cuten(i)*outqc(i,k) + cutenm(i)*outqcm(i,k) + clw_ten(i,k)) * dt
-                  !dcli3dt_CNV(i,k) = dcli3dt_CNV(i,k) + (cutens(i)*outqcs(i,k) + cuten(i)*outqc(i,k) + cutenm(i)*outqcm(i,k) + clw_ten(i,k))* dt
+                  dq3dt_SCNV(i,k) = dq3dt_SCNV(i,k) + tem
+                endif
+              enddo
+            enddo
+          endif
+          if((ideep.eq.1. .or. imid_gf.eq.1) .and. .not.flag_for_dcnv_generic_tend) then
+            do k=kts,ktf
+              do i=its,itf
+                du3dt_DCNV(i,k) = du3dt_DCNV(i,k) + (cuten(i)*outu(i,k)+cutenm(i)*outum(i,k)) * dt
+                dv3dt_DCNV(i,k) = dv3dt_DCNV(i,k) + (cuten(i)*outv(i,k)+cutenm(i)*outvm(i,k)) * dt
+                dt3dt_DCNV(i,k) = dt3dt_DCNV(i,k) + (cuten(i)*outt(i,k)+cutenm(i)*outtm(i,k)) * dt
+                if(qdiag3d) then
+                  tem = (cuten(i)*outq(i,k) + cutenm(i)*outqm(i,k))* dt
+                  tem = tem/(1.0_kind_phys+tem)
+                  dq3dt_DCNV(i,k) = dq3dt_DCNV(i,k) + tem
                 endif
               enddo
             enddo
           endif
         endif
-
    end subroutine cu_gf_driver_run
 !> @}
 end module cu_gf_driver
