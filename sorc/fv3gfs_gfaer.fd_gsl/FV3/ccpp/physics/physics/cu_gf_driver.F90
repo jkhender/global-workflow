@@ -152,6 +152,7 @@ contains
    real(kind=kind_phys), dimension (im,km,11) :: gdc,gdc2
    real(kind=kind_phys), dimension (im)    :: ht
    real(kind=kind_phys), dimension (im)    :: ccn_gf,ccn_m
+   real(kind=kind_phys) :: ccnclean
    real(kind=kind_phys), dimension (im)    :: dx
    real(kind=kind_phys), dimension (im,km) :: outt,outq,outqc,phh,subm,cupclw,cupclws
    real(kind=kind_phys), dimension (im,km) :: dhdt,zu,zus,zd,phf,zum,zdm,outum,outvm
