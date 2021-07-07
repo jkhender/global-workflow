@@ -212,6 +212,14 @@ for workflowexec in enkf_chgres_recenter.x enkf_chgres_recenter_nc.x fv3nc2nemsi
   $LINK ../sorc/install/bin/$workflowexec .
 done
 
+[[ -s global_fv3gfs_gf.x ]] && rm -f global_fv3gfs_gf.x
+$LINK ../sorc/fv3gfs.fd/NEMS/exe/global_fv3gfs_gf.x .
+[[ -s global_fv3gfs_mynn.x ]] && rm -f global_fv3gfs_mynn.x
+$LINK ../sorc/fv3gfs_mynn.fd/NEMS/exe/global_fv3gfs_mynn.x .
+[[ -s global_fv3gfs_thmpsub.x ]] && rm -f global_fv3gfs_thmpsub.x
+$LINK ../sorc/fv3gfs_thmpsub.fd/NEMS/exe/global_fv3gfs_thmpsub.x .
+[[ -s global_fv3gfs_gfaer.x ]] && rm -f global_fv3gfs_gfaer.x
+$LINK ../sorc/fv3gfs_gfaer.fd/NEMS/exe/global_fv3gfs_gfaer.x .
 [[ -s global_fv3gfs.x ]] && rm -f global_fv3gfs.x
 $LINK ../sorc/fv3gfs.fd/NEMS/exe/global_fv3gfs.x .
 if [ -d ../sorc/fv3gfs.fd/WW3/exec ]; then # Wave execs

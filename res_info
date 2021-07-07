@@ -1,0 +1,49 @@
+ReservationName=judy_fcst_v1_00 StartTime=2021-06-16T04:15:00 EndTime=2021-06-16T11:30:00 Duration=07:15:00
+   Nodes=v[1-107,109-226] NodeCnt=225 CoreCnt=3600 Features=(null) PartitionName=vjet Flags=DAILY,REPLACE_DOWN,PURGE_COMP=00:15:00
+   TRES=cpu=3600
+   Users=(null) Groups=(null) Accounts=rtgsd-fv3-hfip,jetmgmt Licenses=(null) State=INACTIVE BurstBuffer=(null) Watts=n/a
+   MaxStartDelay=(null)
+
+ReservationName=judy_post_v1_00 StartTime=2021-06-16T04:45:00 EndTime=2021-06-16T12:05:00 Duration=07:20:00
+   Nodes=v[227-232] NodeCnt=6 CoreCnt=96 Features=(null) PartitionName=vjet Flags=DAILY,REPLACE_DOWN,PURGE_COMP=00:15:00
+   TRES=cpu=96
+   Users=(null) Groups=(null) Accounts=rtgsd-fv3-hfip,jetmgmt Licenses=(null) State=INACTIVE BurstBuffer=(null) Watts=n/a
+   MaxStartDelay=(null)
+
+ReservationName=judy_post_v2_00 StartTime=2021-06-16T05:00:00 EndTime=2021-06-16T15:30:00 Duration=10:30:00
+   Nodes=v[233-234] NodeCnt=2 CoreCnt=32 Features=(null) PartitionName=vjet Flags=DAILY,REPLACE_DOWN,PURGE_COMP=00:15:00
+   TRES=cpu=32
+   Users=(null) Groups=(null) Accounts=rtgsd-fv3-hfip,jetmgmt Licenses=(null) State=INACTIVE BurstBuffer=(null) Watts=n/a
+   MaxStartDelay=(null)
+
+ReservationName=judy_fcst_v2_00 StartTime=2021-06-16T11:35:00 EndTime=2021-06-16T19:15:00 Duration=07:40:00
+   Nodes=v[1-107,109-226,235-242] NodeCnt=233 CoreCnt=3728 Features=(null) PartitionName=vjet Flags=DAILY,REPLACE_DOWN,PURGE_COMP=00:15:00
+   TRES=cpu=3728
+   Users=(null) Groups=(null) Accounts=rtgsd-fv3-hfip,jetmgmt Licenses=(null) State=INACTIVE BurstBuffer=(null) Watts=n/a
+   MaxStartDelay=(null)
+
+ReservationName=judy_post_v3_00 StartTime=2021-06-16T11:55:00 EndTime=2021-06-16T20:55:00 Duration=09:00:00
+   Nodes=v[243-245] NodeCnt=3 CoreCnt=48 Features=(null) PartitionName=vjet Flags=DAILY,REPLACE_DOWN,PURGE_COMP=00:15:00
+   TRES=cpu=48
+   Users=(null) Groups=(null) Accounts=rtgsd-fv3-hfip,jetmgmt Licenses=(null) State=INACTIVE BurstBuffer=(null) Watts=n/a
+   MaxStartDelay=(null)
+
+ReservationName=judy_post_v4_00 StartTime=2021-06-16T12:05:00 EndTime=2021-06-16T20:00:00 Duration=07:55:00
+   Nodes=v227 NodeCnt=1 CoreCnt=16 Features=(null) PartitionName=vjet Flags=DAILY,REPLACE_DOWN,PURGE_COMP=00:15:00
+   TRES=cpu=16
+   Users=(null) Groups=(null) Accounts=rtgsd-fv3-hfip,jetmgmt Licenses=(null) State=INACTIVE BurstBuffer=(null) Watts=n/a
+   MaxStartDelay=(null)
+
+
+
+judy_fcst_v1_00:   fcst for MYNN/GF   7:15    nodes=225     init: 4, fcst: 112 each
+judy_fcst_v2_00:   fcst for THMP      7:40    nodes=233     232 each
+
+judy_post_v1_00:   post for MYNN/GF   7:30    nodes=6       3 nodes each
+judy_post_v2_00:   ncl for MYNN/GF   10:30    nodes=2       ncl:  1 node
+judy_post_v3_00:   post for THMP      9:00    nodes=3
+judy_post_v4_00:   ncl for THMP       7:55    nodes=1
+
+
+ scontrol update res=judy_fcst_v2_00 skip 
+
