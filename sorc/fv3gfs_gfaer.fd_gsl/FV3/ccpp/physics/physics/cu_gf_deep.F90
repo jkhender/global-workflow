@@ -2355,7 +2355,7 @@ contains
      real(kind=kind_phys),    dimension (its:ite,1)                          &
         ,intent (out  )                   ::                 &
         edtc
-     real(kind=kind_phys),        )                          &
+     real(kind=kind_phys),                                   &
         ,intent (out  )                   ::                 &
         pefc
      real(kind=kind_phys),    dimension (its:ite)                            &

@@ -5735,7 +5735,7 @@
   standard_name = mid_conv_activity_counter
   long_name = mid-level convective activity memory
   units = none
-  dimensions = (horizontal_loop_extend)
+  dimensions = (horizontal_loop_extent)
   type = integer
   active = (flag_for_mass_flux_deep_convection_scheme == flag_for_gf_deep_convection_scheme)
 [CLDFRA_BL]

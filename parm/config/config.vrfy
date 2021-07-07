@@ -168,8 +168,7 @@ if [ "$VRFYTRAK" = "YES" ]; then
     fi
     export COMINsyn=${COMINsyn:-${COMROOT}/gfs/prod/syndat}
     if [ $machine = "JET" ]; then
-#JKH       export COMINsyn=${COMINsyn:-/mnt/lfs4/HFIP/hfv3gfs/glopara/com/gfs/prod/syndat}
-        export COMINsyn=${COMINsyn:-/mnt/lfs4/HFIP/hwrf-data/hwrf-input/SYNDAT}
+        export COMINsyn=${COMINsyn:-/mnt/lfs4/HFIP/hwrf-data/hwrf-input/SYNDAT-PLUS}
     fi
 fi
 

@@ -116,7 +116,11 @@ case $case_in in
             export DELTIM=180
           fi
         else
-          export DELTIM=150
+          if [[ "$CCPP_SUITE" == "FV3_GFS_v16_mynn" ]] ; then
+            export DELTIM=100
+          else
+            export DELTIM=150
+          fi
         fi
         export layout_x=12
         export layout_y=8
