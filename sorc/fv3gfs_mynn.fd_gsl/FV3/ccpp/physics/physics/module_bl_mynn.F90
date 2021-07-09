@@ -747,9 +747,9 @@ CONTAINS
 !
        vtt =  1.0 +vt(k)*abk +vt(k-1)*afk  ! Beta-theta in NN09, Eq. 39
        vqq =  tv0 +vq(k)*abk +vq(k-1)*afk  ! Beta-q
-       !dtq =  vtt*dtz +vqq*dqz
+       dtq =  vtt*dtz +vqq*dqz
        !Alternatively, use theta-v without the SGS clouds
-       dtq = ( thetav(k)-thetav(k-1) )/( dzk )
+       !dtq = ( thetav(k)-thetav(k-1) )/( dzk )
 !
        dtl(k) =  dtz
        dqw(k) =  dqz
@@ -1778,8 +1778,8 @@ CONTAINS
           !sm(k) = sm(k) * qdiv
 
           !Use level 2.0 functions as in original MYNN
-          sh(k) = sh(k) * qdiv
-          sm(k) = Prnum*sh(k)
+          !sh(k) = sh(k) * qdiv
+          !sm(k) = Prnum*sh(k)
 
           !Recalculate terms for later use
           !JOE-Canuto/Kitamura mod
@@ -1793,6 +1793,10 @@ CONTAINS
           e4   = e1   - e4c*ghel*a2fac * qdiv**2
           eden = e2*e4 + e3*e5c*gmel * qdiv**2
           eden = MAX( eden, 1.0d-20 )
+          !!JOE-Canuto/Kitamura mod
+          !!sh(k) = q3sq*a2*( e2+3.0*c1*e5c*gmel )/eden  - retro 5
+          sh(k) = q3sq*(a2*a2fac)*( e2+3.0*c1*e5c*gmel )/eden
+          sm(k) = Prnum*sh(k)
        ELSE
           !JOE-Canuto/Kitamura mod
           !e1   = q3sq - e1c*ghel
@@ -1841,11 +1845,11 @@ CONTAINS
        ENDIF
 
        !Enforce additional constraints for level 2.5 functions
-       !IF ( sh(k) > sh25max ) sh(k) = sh25max
-       !IF ( sh(k) < sh25min ) sh(k) = sh25min
+       IF ( sh(k) > sh25max ) sh(k) = sh25max
+       IF ( sh(k) < sh25min ) sh(k) = sh25min
        !IF ( sm(k) > sm25max ) sm(k) = sm25max
        !IF ( sm(k) < sm25min ) sm(k) = sm25min
-       !sm(k) = Prnum*sh(k)
+       sm(k) = Prnum*sh(k)
 
 !   **  Level 3 : start  **
        IF ( closure .GE. 3.0 ) THEN
@@ -2593,7 +2597,7 @@ CONTAINS
     !variables for SGS BL clouds
     REAL            :: zagl,damp,PBLH2
     REAL            :: lfac
-    INTEGER, PARAMETER :: sig_order = 2  !sigma form, 1: use state variables, 2: higher-order variables
+    INTEGER, PARAMETER :: sig_order = 1  !sigma form, 1: use state variables, 2: higher-order variables
 
     !JAYMES:  variables for tropopause-height estimation
     REAL            :: theta1, theta2, ht1, ht2
